@@ -81,7 +81,6 @@ module Mireka
   end
   
   POSTMASTER = PostmasterAliasMapper.new()
-  puts 1111111
   POSTMASTER.setCanonical("postmaster@#{DOMAIN}")
   inject(POSTMASTER)
   
