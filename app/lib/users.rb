@@ -71,12 +71,12 @@ module Mireka
     user.setUsername(data[:username])
     user.setPassword(data[:password])
     USERS.addUser(user)
-    LoginSpecification.setUser(user)
+    ILoginSpecification.setUser(user)
     STORAGE.add(data[:username], data[:password])
   end
   
   def self.removeUser name
-    LoginSpecification.removeUser(name)
+    ILoginSpecification.removeUser(name)
     STORAGE.remove(name)
   end
   
@@ -91,14 +91,14 @@ module Mireka
   USERS.setUsers(getUsers())
   inject(USERS)
   
-  MaildropRepository = GlobalUsersMaildropDestinationMapper.new()
-  MaildropRepository.setUsers(USERS)
-  MaildropRepository.setMaildropRepository(REPOSITORY)
-  inject(MaildropRepository)
+  IMaildropRepository = GlobalUsersMaildropDestinationMapper.new()
+  IMaildropRepository.setUsers(USERS)
+  IMaildropRepository.setMaildropRepository(REPOSITORY)
+  inject(IMaildropRepository)
   
-  LoginSpecification = LoginSpec.new()
-  LoginSpecification.setUsers(USERS)
-  inject(LoginSpecification)
+  ILoginSpecification = LoginSpec.new()
+  ILoginSpecification.setUsers(USERS)
+  inject(ILoginSpecification)
   
   RecipientSpec = RecipientSpecificationDestinationPair.new()
   RecipientSpec.setRecipientSpecification(inject(SrsRecipientSpecification.new()))

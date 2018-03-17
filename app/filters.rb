@@ -18,6 +18,7 @@ module Mireka
   ]
   
   MX_FILTERS = [
+    PrintSomethingFilter,
     MxLookupDestinationFilter,
     RejectLargeMail.new,
     AddReceivedSpfHeader.new,

@@ -3,7 +3,7 @@ module Mireka
   def self.mail2host_tx
     mailToHostTransmitter = MailToHostTransmitter.new()
     mailToHostTransmitter.setOutgoingConnectionRegistry(OutgoingRegistry)
-    mailToHostTransmitter.setLogIdFactory(LogIdFactory)
+    mailToHostTransmitter.setLogIdFactory(ILogIdFactory)
     mailToHostTransmitter
   end
   
@@ -47,7 +47,7 @@ module Mireka
   PrimaryTransmitter = inject(QueuingTransmitter.new())
   DsnTransmitter = inject(QueuingTransmitter.new())
   RetryTransmitter = inject(QueuingTransmitter.new())
-  LogIdFactory = inject(LogIdFactory.new())
+  ILogIdFactory = inject(LogIdFactory.new())
   OutgoingRegistry = inject(OutgoingConnectionsRegistry.new())
   
   DirectSender = DirectImmediateSender.new()
@@ -60,17 +60,17 @@ module Mireka
   inject(MailCreator)
   
   
-  RetryPolicy = RetryPolicy.new()
-  RetryPolicy.setDsnMailCreator(MailCreator)
-  RetryPolicy.setDsnTransmitter(DsnTransmitter)
-  RetryPolicy.setRetryTransmitter(RetryTransmitter)
-  inject(RetryPolicy)
+  IRetryPolicy = RetryPolicy.new()
+  IRetryPolicy.setDsnMailCreator(MailCreator)
+  IRetryPolicy.setDsnTransmitter(DsnTransmitter)
+  IRetryPolicy.setRetryTransmitter(RetryTransmitter)
+  inject(IRetryPolicy)
   
   
   PrimaryTransmitter.setQueue(submitque)
   PrimaryTransmitter.setImmediateSender(DirectSender)
-  PrimaryTransmitter.setRetryPolicy(RetryPolicy)
-  PrimaryTransmitter.setLogIdFactory(LogIdFactory)
+  PrimaryTransmitter.setRetryPolicy(IRetryPolicy)
+  PrimaryTransmitter.setLogIdFactory(ILogIdFactory)
   ts = TransmitterSummary.new()
   ts.setName('submission')
   PrimaryTransmitter.setSummary(inject(ts))
@@ -78,16 +78,16 @@ module Mireka
   
   DsnTransmitter.setQueue(dsnque)
   DsnTransmitter.setImmediateSender(DirectSender)
-  DsnTransmitter.setRetryPolicy(RetryPolicy)
-  DsnTransmitter.setLogIdFactory(LogIdFactory)
+  DsnTransmitter.setRetryPolicy(IRetryPolicy)
+  DsnTransmitter.setLogIdFactory(ILogIdFactory)
   ts1 = TransmitterSummary.new()
   ts1.setName('dsn')
   DsnTransmitter.setSummary(inject(ts1))
   
   RetryTransmitter.setQueue(retryque)
   RetryTransmitter.setImmediateSender(DirectSender)
-  RetryTransmitter.setRetryPolicy(RetryPolicy)
-  RetryTransmitter.setLogIdFactory(LogIdFactory)
+  RetryTransmitter.setRetryPolicy(IRetryPolicy)
+  RetryTransmitter.setLogIdFactory(ILogIdFactory)
   ts1 = TransmitterSummary.new()
   ts1.setName('retry')
   RetryTransmitter.setSummary(inject(ts1))
