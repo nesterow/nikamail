@@ -2,12 +2,15 @@ module Kernel
   require 'java'
   require_relative "./utils"
   
+  java.lang.System.setProperty("logback.configurationFile", confile("logback.xml"));
   java.lang.System.setProperty("javax.net.ssl.keyStore", confile("keystore.jks"));
   java.lang.System.setProperty("javax.net.ssl.keyStorePassword", "password");
   
   
-  DOMAIN = File.read(confile('hostname')).strip()
-  DOMAIN = 'localhost' if DOMAIN.length == 0
+  DOMAIN_RAW = File.read(confile('hostname')).strip()
+  DOMAIN = DOMAIN_RAW.length == 0 && 'localhost' || DOMAIN_RAW
+  
+  JSONRPC_PORT = 12080
   
   if File.exists?('/etc/hostname')
     LOCAL_DOMAIN = File.read('/etc/hostname').strip()

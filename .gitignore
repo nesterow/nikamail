@@ -1,2 +1,3 @@
 storage/
-config/
+config/keystore.jks
+config/users.storage

@@ -3,6 +3,7 @@ require_relative './queue'
 require_relative './users'
 require_relative './filter'
 require_relative '../filters'
+require_relative './jsonrpc'
 
 java_import "org.subethamail.smtp.auth.EasyAuthenticationHandlerFactory"
 
@@ -45,7 +46,12 @@ module Mireka
     @popserver.setMaildropRepository(REPOSITORY)
     @popserver.setTlsConfiguration(inject(JsseDefaultTlsConfiguration.new()))
     inject(@popserver)
-    @popserver
+  end
+  
+  def self.rpcserver
+    return @rpcserver if @rpcserver
+    @rpcserver = Jimson::Server.new(JsonRpcServer.new, port: JSONRPC_PORT)
+    return @rpcserver
   end
   
 
