@@ -1,4 +1,6 @@
 build:
+	javac -cp ".:lib/*:lib/ext/*" -d lib/ext $$(find ./app/lib/java/* | grep .java)
+	cd lib/ext && jar -cvf ../ext.jar *
 	docker build -t nikamail .
 
 console:

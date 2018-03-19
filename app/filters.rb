@@ -5,7 +5,6 @@ end
 module Mireka
   
   SUBMISSION_FILTERS = [
-    #SubMeasureTrafficFilter,
     SubRejectIfUnauthenticatedFilter,
     SubLookupDestinationFilter,
     RejectLargeMail.new,
