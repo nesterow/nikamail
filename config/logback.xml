@@ -89,9 +89,7 @@
 	</logger>
 	<logger name="org.subethamail.smtp">
 		<level value="debug" />
-		<!--
 		<appender-ref ref="UnknownUser" />
-		-->
 	</logger>
 	<logger name="org.apache.james.jspf">
 		<level value="error" />

@@ -50,7 +50,7 @@ module Kernel
     end
     
     def remove k
-      @data.del(k)
+      @data.delete(k)
       save()
     end
     

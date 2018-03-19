@@ -67,6 +67,11 @@ module Mireka
   end
   
   def self.addUser **data
+    
+    unless STORAGE.get(data[:username]).nil?
+      raise "User Aready Exists"
+    end
+    
     user = GlobalUser.new()
     user.setUsername(data[:username])
     user.setPassword(data[:password])
@@ -76,6 +81,9 @@ module Mireka
   end
   
   def self.removeUser name
+    if STORAGE.get(name).nil?
+      raise "User Does't Exist"
+    end
     ILoginSpecification.removeUser(name)
     STORAGE.remove(name)
   end
