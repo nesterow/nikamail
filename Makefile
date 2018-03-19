@@ -1,5 +1,11 @@
 build:
-	sudo docker build -t nikamail .
+	docker build -t nikamail .
 
 run:
-	sudo docker run -v $$(pwd):/data -p 4025:25 -p 4110:110 -p 4587:587 -it nikamail:latest app/main.rb
+	docker run -v $$(pwd):/data -p 25:25 -p 110:110 -p 587:587 -p 12080:12080 -it nikamail:latest app/main.rb
+
+run-daemon:
+	docker run -d -v $$(pwd):/data -p 25:25 -p 110:110 -p 587:587 -p 12080:12080 -it nikamail:latest app/main.rb
+
+stop-daemon:
+	echo "Implement It"
