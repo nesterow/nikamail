@@ -6,6 +6,7 @@ module Kernel
   javaconf("javax.net.ssl.keyStore", confile("keystore.jks"));
   javaconf("javax.net.ssl.keyStorePassword", "password");
   
+  SHA1_SALT = 'a6f519d72b910000'
   
   DOMAIN = File.read(confile('hostname')).strip()
   DOMAIN = 'localhost' if DOMAIN.length == 0

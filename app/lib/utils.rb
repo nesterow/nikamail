@@ -1,4 +1,6 @@
 require 'fileutils'
+require 'base64'
+require 'digest'
 
 module J
   java_import "java.lang.Thread"
@@ -50,4 +52,16 @@ def import_cert(cer, key)
   cmd = "keytool -importkeystore -destkeystore #{path} -srckeystore #{path}.p12 -srcstoretype pkcs12 -srcstorepass password -storepass password -keypass password -noprompt -alias servercert"
   system(cmd)
   File.delete("#{path}.p12")
+end
+
+
+
+def hash_password password
+  Base64.encode64("#{Digest::SHA1.digest("#{password}#{SHA1_SALT}")}").chomp
+end
+
+def check_password(password, ssha)
+  decoded = Base64.decode64(ssha)
+  hash = decoded[0,20]
+  hash_password(password) == ssha
 end

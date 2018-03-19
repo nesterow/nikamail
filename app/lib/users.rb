@@ -16,7 +16,7 @@ module Mireka
       actualPassword = @usernamePasswordMap.get(username)
       if actualPassword.nil?
         return Mireka::LoginResult.new(Mireka::LoginDecision::USERNAME_NOT_EXISTS, nil);
-      elsif actualPassword == password
+      elsif check_password(password, actualPassword)
         return Mireka::LoginResult.new(Mireka::LoginDecision::VALID, @usernamePrincipalMap.get(username));
       else
         return Mireka::LoginResult.new(Mireka::LoginDecision::PASSWORD_DOES_NOT_MATCH, nil);
@@ -70,13 +70,13 @@ module Mireka
     unless STORAGE.get(data[:username]).nil?
       raise "User Aready Exists"
     end
-    
+    data[:password] = hash_password(data[:password])
     user = GlobalUser.new()
     user.setUsername(data[:username])
     user.setPassword(data[:password])
-    USERS.addUser(user)
     ILoginSpecification.setUser(user)
     STORAGE.add(data[:username], data[:password])
+    USERS.addUser(user)
   end
   
   def self.removeUser name
