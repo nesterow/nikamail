@@ -1,4 +1,3 @@
-require 'java'
 
 module Mireka
   
@@ -114,7 +113,7 @@ module Mireka
   
   LocalRecipientsTable = LocalRecipientTable.new()
   LocalRecipientsTable.setLocalDomains(domains)
-  LocalRecipientsTable.setMappers([REPOSITORY, POSTMASTER, RecipientSpec])
+  LocalRecipientsTable.setMappers([IMaildropRepository, POSTMASTER, RecipientSpec])
   inject(LocalRecipientsTable)
   
   SubmissionRecipientTable = RecipientTable.new()

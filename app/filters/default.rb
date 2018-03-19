@@ -3,14 +3,14 @@ module Mireka
   SubRejectIfUnauthenticatedFilter = RejectIfUnauthenticated.new
   SubRejectIfUnauthenticatedFilter.setAuthenticatedSpecifications([inject(SmtpAuthenticated.new)])
   
-  SubMeasureTrafficFilter = MeasureTraffic.new()
-  SubMeasureTrafficFilterSmtpSummary = IncomingSmtpSummary.new
-  SubMeasureTrafficFilterSmtpSummary.setName('submission')
-  SubMeasureTrafficFilter.setIncomingSmtpSummary(inject(SubMeasureTrafficFilterSmtpSummary))
-  
+  #SubMeasureTrafficFilter = MeasureTraffic.new()
+  #SubMeasureTrafficFilterSmtpSummary = IncomingSmtpSummary.new
+  #SubMeasureTrafficFilterSmtpSummary.setName('submission')
+  #SubMeasureTrafficFilter.setIncomingSmtpSummary(inject(SubMeasureTrafficFilterSmtpSummary))
+  #
   
   SubLookupDestinationFilter = LookupDestinationFilter.new
-  SubLookupDestinationFilter.setRecipientDestinationMapper(SubmissionRecipientTable)
+  SubLookupDestinationFilter.setRecipientDestinationMapper(LocalRecipientsTable)
 
   
   SavePostmasterMailFilter = SavePostmasterMail.new

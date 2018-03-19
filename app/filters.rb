@@ -5,7 +5,7 @@ end
 module Mireka
   
   SUBMISSION_FILTERS = [
-    SubMeasureTrafficFilter,
+    #SubMeasureTrafficFilter,
     SubRejectIfUnauthenticatedFilter,
     SubLookupDestinationFilter,
     RejectLargeMail.new,
@@ -18,7 +18,6 @@ module Mireka
   ]
   
   MX_FILTERS = [
-    PrintSomethingFilter,
     MxLookupDestinationFilter,
     RejectLargeMail.new,
     AddReceivedSpfHeader.new,

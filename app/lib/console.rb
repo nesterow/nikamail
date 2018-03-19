@@ -19,7 +19,6 @@ class Console
   
   def exit
     java.lang.System.exit(0)
-    Kernel.exit
   end
   
   def ping
@@ -28,7 +27,7 @@ class Console
   
   def finduser name
     users = Mireka.getUsers.select {|u|
-      u.getUsernameObject().toString().start_with? name
+      u.getUsernameObject().toString().start_with? name.to_s
     }.map {|u|
       u.getUsernameObject().toString()
     }
@@ -75,6 +74,10 @@ class Console
     0
   end
   
+  def genssl
+    generate_cert()
+  end
+  
   def help
     puts """
       METHODS:
@@ -96,10 +99,7 @@ class Console
         
         genssl  -> Generate a self-signed certificate
         importssl -> Import authorory-signed certificate
-        start -> Start server
         
-        restart -> Restart server
-        stop -> Stop server
         exit -> Exit
       
       ENVIRONMENT:

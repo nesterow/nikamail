@@ -1,5 +1,20 @@
 require 'fileutils'
 
+module J
+  java_import "java.lang.Thread"
+end
+
+module FFIProcess
+  require 'ffi'
+  extend FFI::Library
+  ffi_lib FFI::Library::LIBC
+  attach_function :fork, [], :int
+end
+
+def javaconf prop, value
+  java.lang.System.setProperty(prop, value)
+end
+
 def folder(path)
   root = File.dirname(__FILE__).gsub('/lib','').gsub('/app', '/')
   path = "#{root}/#{path}"

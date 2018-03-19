@@ -13,7 +13,7 @@ module Mireka
   def self.subserver
     return @subserver if @subserver
     usernamePasswordValidator = UsernamePasswordValidatorImpl.new()
-    usernamePasswordValidator.setLoginSpecification(LoginSpecification);
+    usernamePasswordValidator.setLoginSpecification(ILoginSpecification);
     inject(usernamePasswordValidator)
     submissionMessageHandler = MessageHandlerFactoryImpl.new()
     submissionMessageHandler.setFilters(SubFilters)
@@ -41,7 +41,7 @@ module Mireka
   def self.popserver
     return @popserver if @popserver
     @popserver = PopServer.new()
-    @popserver.setLoginSpecification(LoginSpecification)
+    @popserver.setLoginSpecification(ILoginSpecification)
     @popserver.setPrincipalMaildropTable(inject(GlobalUsersPrincipalMaildropTable.new()))
     @popserver.setMaildropRepository(REPOSITORY)
     @popserver.setTlsConfiguration(inject(JsseDefaultTlsConfiguration.new()))
