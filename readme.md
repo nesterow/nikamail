@@ -17,8 +17,9 @@ Installation
 
 3. Commands
 ```
-    make build         - (re)build docker container
-    make run           - run NikaMail and interactive console
+    make build         - (re)build docker container and java extensions
+    make run           - run inertactive console
+    make run           - run NikaMail
     make run-daemon    - run NikaMail in daemon mode
     make stop-daemon   - stop daemon
 ```

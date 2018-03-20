@@ -13,6 +13,7 @@ module Mireka
     @submitque = ScheduleFileDirQueue.new()
     subStore = FileDirStore.new()
     subStore.setDir(folder('storage/queue/submitted'))
+    subStore.setMaxSize(1024)
     @submitque.setStore(inject(subStore))
     @submitque.setMailProcessorFactory(PrimaryTransmitter)
     @submitque.setThreadCount(10)
@@ -25,6 +26,7 @@ module Mireka
     @retryque = ScheduleFileDirQueue.new()
     retStore = FileDirStore.new()
     retStore.setDir(folder('storage/queue/retry'))
+    retStore.setMaxSize(1024)
     @retryque.setStore(inject(retStore))
     @retryque.setMailProcessorFactory(RetryTransmitter)
     @retryque.setThreadCount(5)
@@ -37,6 +39,7 @@ module Mireka
     @dsnque = ScheduleFileDirQueue.new()
     dsnStore = FileDirStore.new()
     dsnStore.setDir(folder('storage/queue/dsn'))
+    dsnStore.setMaxSize(1024)
     @dsnque.setStore(inject(dsnStore))
     @dsnque.setMailProcessorFactory(DsnTransmitter)
     @dsnque.setThreadCount(5)
@@ -73,6 +76,7 @@ module Mireka
   PrimaryTransmitter.setLogIdFactory(ILogIdFactory)
   ts = TransmitterSummary.new()
   ts.setName('submission')
+  ts.register()
   PrimaryTransmitter.setSummary(inject(ts))
   
   

@@ -68,6 +68,10 @@ class Console
     name
   end
   
+  def forward from, *to
+    Mireka.addForwarding from, *to
+  end
+  
   def domains
     puts 'Host List:'
     puts HOST_LIST

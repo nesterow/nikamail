@@ -39,12 +39,13 @@ module Mireka
     @domains = InlineDomainRegistry.new()
     @domains.setRemoteParts(HOST_LIST)
     inject(@domains)
-    srs = Mireka::Srs.new()
-    srs.setLocalDomains(@domains)
-    inject(srs)
     @domains
   end
   
+  ISrs = Srs.new
+  #ISrs.set_secret_key('470F1A70470F1A70')
+  ISrs.setLocalDomains(domains)
+  inject(ISrs)
   
   MAILER = NameAddr.new()
   MAILER.setDisplayName('Mail Delivery System')

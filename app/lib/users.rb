@@ -87,11 +87,42 @@ module Mireka
     STORAGE.remove(name)
   end
   
+  def self.forward from, *recipients
+    members = []
+    for addr in recipients
+      m = Member.new()
+      m.setAddress(addr)
+      members.push(inject(m))
+    end
+    
+    f = ForwardDestination.new()
+    f.setSrs(ISrs)
+    f.setTransmitter(PrimaryTransmitter)
+    f.setMembers(members)
+    
+    dest = RecipientDestinationPair.new()
+    dest.setRecipient(from)
+    dest.setDestination(inject(f))
+    
+    return inject(dest)
+  end
+  
+  def self.addForwarding from, *recipients
+    list = FLISTSDB.get(from) || []
+    list = list + recipients
+    FLISTSDB.add(from, list)
+    puts 'Restart server in order to apply changes'
+  end
+  
+ 
+  
+  
   POSTMASTER = PostmasterAliasMapper.new()
   POSTMASTER.setCanonical("postmaster@#{DOMAIN}")
   inject(POSTMASTER)
   
   STORAGE = Storage.new('users.storage')
+  
   
   USERS = GlobalUsers.new()
   USERS.setUsers(getUsers())
@@ -106,14 +137,27 @@ module Mireka
   ILoginSpecification.setUsers(USERS)
   inject(ILoginSpecification)
   
+  
+  IForwardList = []
+  FLISTSDB = Storage.new('forwarding.storage')
+  flist = FLISTSDB.all
+  flist.keys.each { |from|
+    destinations = flist[from]
+    IForwardList.push(forward(from, *destinations))
+  }
+  
   RecipientSpec = RecipientSpecificationDestinationPair.new()
+  
+  ISrsDestination = SrsDestination.new()
+  ISrsDestination.setSrs(ISrs)
+
   RecipientSpec.setRecipientSpecification(inject(SrsRecipientSpecification.new()))
-  RecipientSpec.setDestination(inject(SrsDestination.new()))
+  RecipientSpec.setDestination(inject(ISrsDestination))
   inject(RecipientSpec)
   
   LocalRecipientsTable = LocalRecipientTable.new()
   LocalRecipientsTable.setLocalDomains(domains)
-  LocalRecipientsTable.setMappers([IMaildropRepository, POSTMASTER, RecipientSpec])
+  LocalRecipientsTable.setMappers([IMaildropRepository, POSTMASTER, RecipientSpec] + IForwardList)
   inject(LocalRecipientsTable)
   
   SubmissionRecipientTable = RecipientTable.new()
