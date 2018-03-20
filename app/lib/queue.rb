@@ -96,7 +96,4 @@ module Mireka
   RetryTransmitter.setSummary(inject(ts1))
   inject(RetryTransmitter)
   
-  
-  
-  
 end

@@ -72,10 +72,22 @@ class Console
     Mireka.addForwarding from, *to
   end
   
+  def unforward from, *to
+    Mireka.removeForwarding from, *to
+  end
+  
   def domains
     puts 'Host List:'
     puts HOST_LIST
     0
+  end
+  
+  def setdomain *arg
+    Mireka.addDomains(*arg)
+  end
+  
+  def deldomain *arg
+    Mireka.removeDomains(*arg)
   end
   
   def genssl
@@ -92,14 +104,15 @@ class Console
         deluser name -> Remove user
         password user, password -> Change user password
         
-        addalias name, alias -> Add alias address
-        addgroup name, user1, user2...  -> Add group mailbox
+        forward email, *recipients -> forward email to 'recipients'
+        unforward email, *recipients || :all -> remove forwarding for specified recipients
+        
+        alias name, alias -> Add alias address
          
         
         domains -> Print domain list
-        setdomain name -> Set main hostname
-        newdomain name -> Add a hostname to list
-        deldomain name -> Remove domain from list
+        setdomain name1, name2 -> Add hostnames to list
+        deldomain name1, name2 -> Remove domains from list
         
         genssl  -> Generate a self-signed certificate
         importssl -> Import authorory-signed certificate

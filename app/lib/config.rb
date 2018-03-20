@@ -3,23 +3,23 @@ module Kernel
   require_relative "./utils"
   require_relative '../../lib/ext.jar'
   
-  #javaconf("logback.configurationFile", confile("logback.xml"));
-  javaconf("javax.net.ssl.keyStore", confile("keystore.jks"));
-  javaconf("javax.net.ssl.keyStorePassword", "password");
+  DEBUG = true
+  
+  javaconf("logback.configurationFile", confile("logback.xml")) unless DEBUG
+  javaconf("javax.net.ssl.keyStore", confile("keystore.jks"))
+  javaconf("javax.net.ssl.keyStorePassword", "password")
   
   SHA1_SALT = 'a6f519d72b910000'
   
-  DOMAIN = File.read(confile('hostname')).strip()
-  DOMAIN = 'localhost' if DOMAIN.length == 0
   JSONRPC_PORT = 12080
   
   if File.exists?('/etc/hostname')
-    LOCAL_DOMAIN = File.read('/etc/hostname').strip()
+    DOMAIN = File.read('/etc/hostname').strip()
   else
-    LOCAL_DOMAIN = 'local'
+    DOMAIN = 'localhost'
   end
   
-  HOST_LIST = [DOMAIN, LOCAL_DOMAIN, 'localhost'] + File.read(confile('host.list')).strip().split("\n")
+  HOST_LIST = ['localhost', DOMAIN ] + File.read(confile('host.list')).strip().split("\n")
   
   class Storage
     def initialize path

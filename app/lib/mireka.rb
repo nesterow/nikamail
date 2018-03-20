@@ -42,6 +42,28 @@ module Mireka
     @domains
   end
   
+  def self.addDomains *arg
+    File.open(confile('host.list'), 'a') { |f|
+      for domain in arg
+        f.puts "#{domain}\n"
+      end
+      f.close
+    }
+    puts "Restart server to apply changes"
+  end
+  
+  def self.removeDomains *arg
+    filtered = HOST_LIST.select {|d| !arg.include?(d) }
+    File.delete(confile('host.list'))
+    File.open(confile('host.list'), 'a') { |f|
+      for domain in filtered
+        f.puts "#{domain}\n"
+      end
+      f.close
+    }
+    puts "Restart server to apply changes"
+  end
+  
   ISrs = Srs.new
   #ISrs.set_secret_key('470F1A70470F1A70')
   ISrs.setLocalDomains(domains)

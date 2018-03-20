@@ -114,6 +114,28 @@ module Mireka
     puts 'Restart server in order to apply changes'
   end
   
+  def self.removeForwarding from, *recipients
+    
+    
+    if recipients.length == 0
+      puts "Specify either recipients or use :all symbol to remove all"
+      return
+    end
+    
+    if recipients[0] == :all
+      FLISTSDB.remove(from)
+      puts "Forwarding list was removed"
+      puts 'Restart server in order to apply changes'
+      return
+    end
+    
+    list = (FLISTSDB.get(from) || []).select { |addr|
+      !recipients.include? addr
+    }
+    FLISTSDB.add(from, list)
+    puts 'Restart server in order to apply changes'
+  end
+  
  
   
   
