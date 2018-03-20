@@ -1,60 +1,20 @@
 module Mireka
-  
-  def self.mail2host_tx
-    mailToHostTransmitter = MailToHostTransmitter.new()
-    mailToHostTransmitter.setOutgoingConnectionRegistry(OutgoingRegistry)
-    mailToHostTransmitter.setLogIdFactory(ILogIdFactory)
-    mailToHostTransmitter
-  end
-  
-  def self.submitque
-    return @submitque if @submitque
-    
-    @submitque = ScheduleFileDirQueue.new()
-    subStore = FileDirStore.new()
-    subStore.setDir(folder('storage/queue/submitted'))
-    subStore.setMaxSize(1024)
-    @submitque.setStore(inject(subStore))
-    @submitque.setMailProcessorFactory(PrimaryTransmitter)
-    @submitque.setThreadCount(10)
-    @submitque
-  end
-  
-  def self.retryque
-    return @retryque if @retryque
-    
-    @retryque = ScheduleFileDirQueue.new()
-    retStore = FileDirStore.new()
-    retStore.setDir(folder('storage/queue/retry'))
-    retStore.setMaxSize(1024)
-    @retryque.setStore(inject(retStore))
-    @retryque.setMailProcessorFactory(RetryTransmitter)
-    @retryque.setThreadCount(5)
-    @retryque
-  end
-  
-  def self.dsnque
-    return @dsnque if @dsnque
-    
-    @dsnque = ScheduleFileDirQueue.new()
-    dsnStore = FileDirStore.new()
-    dsnStore.setDir(folder('storage/queue/dsn'))
-    dsnStore.setMaxSize(1024)
-    @dsnque.setStore(inject(dsnStore))
-    @dsnque.setMailProcessorFactory(DsnTransmitter)
-    @dsnque.setThreadCount(5)
-    @dsnque
-  end
-
-  
+  ILogIdFactory = inject(LogIdFactory.new())
   PrimaryTransmitter = inject(QueuingTransmitter.new())
   DsnTransmitter = inject(QueuingTransmitter.new())
   RetryTransmitter = inject(QueuingTransmitter.new())
-  ILogIdFactory = inject(LogIdFactory.new())
   OutgoingRegistry = inject(OutgoingConnectionsRegistry.new())
   
+  IMailToHostTransmitter = MailToHostTransmitter.new()
+  IMailToHostTransmitter.setOutgoingConnectionRegistry(OutgoingRegistry)
+  IMailToHostTransmitter.setLogIdFactory(ILogIdFactory)
+  
+  IClientFactory = ClientFactory.new
+  IClientFactory.setHelo(DOMAIN)
+  
   DirectSender = DirectImmediateSender.new()
-  DirectSender.setMailToHostTransmitter(mail2host_tx)
+  DirectSender.setClientFactory(inject(IClientFactory))
+  DirectSender.setMailToHostTransmitter(inject(IMailToHostTransmitter))
   inject(DirectSender)
   
   MailCreator = DsnMailCreator.new()
@@ -69,8 +29,18 @@ module Mireka
   IRetryPolicy.setRetryTransmitter(RetryTransmitter)
   inject(IRetryPolicy)
   
+  ISubStore = FileDirStore.new(
+    java.io.File.new(folder('storage/queue/submitted')),
+    1024.to_int
+  )
+  ISubmitQue = ScheduleFileDirQueue.new(
+    inject(ISubStore),
+    PrimaryTransmitter,
+    java.util.concurrent.ScheduledThreadPoolExecutor.new(10)
+  )
+  inject(ISubmitQue)
   
-  PrimaryTransmitter.setQueue(submitque)
+  PrimaryTransmitter.setQueue(ISubmitQue)
   PrimaryTransmitter.setImmediateSender(DirectSender)
   PrimaryTransmitter.setRetryPolicy(IRetryPolicy)
   PrimaryTransmitter.setLogIdFactory(ILogIdFactory)
@@ -78,24 +48,55 @@ module Mireka
   ts.setName('submission')
   ts.register()
   PrimaryTransmitter.setSummary(inject(ts))
+  inject(PrimaryTransmitter)
   
   
-  DsnTransmitter.setQueue(dsnque)
+  DsnStore = FileDirStore.new(
+    java.io.File.new(folder('storage/queue/dsn')),
+    1024.to_int
+  )
+  IDsnQue = ScheduleFileDirQueue.new(
+    inject(DsnStore),
+    PrimaryTransmitter,
+    java.util.concurrent.ScheduledThreadPoolExecutor.new(10)
+  )
+  inject(IDsnQue)
+  
+  
+  DsnTransmitter.setQueue(IDsnQue)
   DsnTransmitter.setImmediateSender(DirectSender)
   DsnTransmitter.setRetryPolicy(IRetryPolicy)
   DsnTransmitter.setLogIdFactory(ILogIdFactory)
   ts1 = TransmitterSummary.new()
   ts1.setName('dsn')
+  ts1.register()
   DsnTransmitter.setSummary(inject(ts1))
+  inject(DsnTransmitter)
   
-  RetryTransmitter.setQueue(retryque)
+  
+  RetryStore = FileDirStore.new(
+    java.io.File.new(folder('storage/queue/retry')),
+    1024.to_int
+  )
+  IRetryQue = ScheduleFileDirQueue.new(
+    inject(DsnStore),
+    PrimaryTransmitter,
+    java.util.concurrent.ScheduledThreadPoolExecutor.new(10)
+  )
+  inject(IRetryQue)
+  
+    
+  RetryTransmitter.setQueue(IRetryQue)
   RetryTransmitter.setImmediateSender(DirectSender)
   RetryTransmitter.setRetryPolicy(IRetryPolicy)
   RetryTransmitter.setLogIdFactory(ILogIdFactory)
   ts1 = TransmitterSummary.new()
   ts1.setName('retry')
+  ts1.register()
   RetryTransmitter.setSummary(inject(ts1))
+  inject(RetryTransmitter)
   
-
+  
+  
   
 end

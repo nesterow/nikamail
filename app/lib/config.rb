@@ -3,7 +3,7 @@ module Kernel
   require_relative "./utils"
   require_relative '../../lib/ext.jar'
   
-  javaconf("logback.configurationFile", confile("logback.xml"));
+  #javaconf("logback.configurationFile", confile("logback.xml"));
   javaconf("javax.net.ssl.keyStore", confile("keystore.jks"));
   javaconf("javax.net.ssl.keyStorePassword", "password");
   

@@ -5,7 +5,22 @@ module Mireka
   
   
   SubLookupDestinationFilter = LookupDestinationFilter.new
-  SubLookupDestinationFilter.setRecipientDestinationMapper(LocalRecipientsTable)
+  
+  RemoteSpec = RecipientSpecificationDestinationPair.new
+  RemoteSpec.setRecipientSpecification(inject(AnyRecipient.new))
+  SubTransmitter = TransmitterDestination.new
+  SubTransmitter.setTransmitter(PrimaryTransmitter)
+  RemoteSpec.setDestination(inject(SubTransmitter))
+  inject(RemoteSpec)
+  
+  SubRecipientTable = RecipientTable.new
+  SubRecipientTable.setMappers([
+    LocalRecipientsTable,
+    RemoteSpec
+  ])
+  inject(SubRecipientTable)
+  
+  SubLookupDestinationFilter.setRecipientDestinationMapper(SubRecipientTable)
 
   SavePostmasterMailFilter = SavePostmasterMail.new
   SavePostmasterMailFilter.setDir(folder("storage/mail/postmaster"))

@@ -7,20 +7,22 @@ require_relative 'lib/console'
 class Main < J::Thread
   
   def run
+    Mireka::ISubmitQue.start()
+    Mireka::IRetryQue.start()
+    Mireka::IDsnQue.start()
     Mireka.subserver.start()
     Mireka.mxserver.start()
     Mireka.popserver.start()
-    Mireka.submitque.start()
-    Mireka.retryque.start()
     Mireka.rpcserver.start()
   end
   
   def interrupt
+    Mireka::ISubmitQue.shutdown()
+    Mireka::IDsnQue.shutdown()
+    Mireka::IRetryQue.shutdown()
     Mireka.subserver.stop()
     Mireka.mxserver.stop()
     Mireka.popserver.shutdown()
-    Mireka.submitque.shutdown()
-    Mireka.retryque.shutdown()
     super()
   end
   
