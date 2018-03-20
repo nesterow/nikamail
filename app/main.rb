@@ -1,5 +1,5 @@
 require 'singleton'
-require_relative 'lib/config'
+require_relative 'lib/globals'
 require_relative 'lib/server'
 require_relative 'lib/console'
 

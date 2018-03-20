@@ -2,22 +2,11 @@ module Kernel
   require 'java'
   require_relative "./utils"
   require_relative '../../lib/ext.jar'
-  
-  DEBUG = true
-  
+  require_relative '../../config/configuration'
+
   javaconf("logback.configurationFile", confile("logback.xml")) unless DEBUG
-  javaconf("javax.net.ssl.keyStore", confile("keystore.jks"))
-  javaconf("javax.net.ssl.keyStorePassword", "password")
-  
-  SHA1_SALT = 'a6f519d72b910000'
-  
-  JSONRPC_PORT = 12080
-  
-  if File.exists?('/etc/hostname')
-    DOMAIN = File.read('/etc/hostname').strip()
-  else
-    DOMAIN = 'localhost'
-  end
+  javaconf("javax.net.ssl.keyStore", confile(KEYSTORE))
+  javaconf("javax.net.ssl.keyStorePassword", KEYSTORE_PASSWORD)
   
   HOST_LIST = ['localhost', DOMAIN ] + File.read(confile('host.list')).strip().split("\n")
   

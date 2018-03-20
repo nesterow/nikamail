@@ -22,7 +22,7 @@ module Mireka
     authenticationHandlerFactory = EasyAuthenticationHandlerFactory.new(usernamePasswordValidator)
     @submission.setAuthenticationHandlerFactory(authenticationHandlerFactory)
     @submission.setHostName(DOMAIN)
-    @submission.setEnableTLS(true)
+    @submission.setEnableTLS(STARTTLS)
     inject(@submission)
   end
   
@@ -33,7 +33,7 @@ module Mireka
     inject(mxMessageHandler)
     @mxserver = SMTPServer.new(mxMessageHandler)
     @mxserver.setHostName(DOMAIN)
-    @mxserver.setEnableTLS(true)
+    @mxserver.setEnableTLS(STARTTLS)
     inject(@mxserver)
   end
  
