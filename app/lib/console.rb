@@ -90,6 +90,14 @@ class Console
     Mireka.removeDomains(*arg)
   end
   
+  def setalias from, to
+    Mireka.addAlias(from, to)
+  end
+  
+  def delalias from
+    Mireka.removeAlias(from)
+  end
+  
   def genssl
     generate_cert()
   end
@@ -108,7 +116,7 @@ class Console
         unforward email, *recipients || :all -> remove forwarding for specified recipients
         
         alias name, alias -> Add alias address
-         
+        delalias name -> Remove alias
         
         domains -> Print domain list
         setdomain name1, name2 -> Add hostnames to list

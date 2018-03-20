@@ -136,9 +136,27 @@ module Mireka
     puts 'Restart server in order to apply changes'
   end
   
- 
   
+  def self.setalias aliasAddr, targetAddr
+    adest = AliasDestination.new
+    adest.setRecipient(targetAddr)
+    dest = RecipientDestinationPair.new
+    dest.setRecipient(aliasAddr)
+    dest.setDestination(inject(adest))
+    inject(dest)
+  end
   
+  def self.addAlias from, to
+    ALIASDB.add(from, to) 
+    puts 'Restart server in order to apply changes'
+  end
+  
+  def self.removeAlias from
+    ALIASDB.remove(from) 
+    puts 'Restart server in order to apply changes'
+  end
+  
+
   POSTMASTER = PostmasterAliasMapper.new()
   POSTMASTER.setCanonical("postmaster@#{DOMAIN}")
   inject(POSTMASTER)
@@ -168,6 +186,14 @@ module Mireka
     IForwardList.push(forward(from, *destinations))
   }
   
+  IAliasesList = []
+  ALIASDB = Storage.new('aliases.storage')
+  alist = ALIASDB.all
+  alist.keys.each { |from|
+    to = alist[from]
+    IAliasesList.push(setalias(from, to))
+  }
+  
   RecipientSpec = RecipientSpecificationDestinationPair.new()
   
   ISrsDestination = SrsDestination.new()
@@ -179,7 +205,7 @@ module Mireka
   
   LocalRecipientsTable = LocalRecipientTable.new()
   LocalRecipientsTable.setLocalDomains(domains)
-  LocalRecipientsTable.setMappers(IForwardList + [IMaildropRepository, POSTMASTER, RecipientSpec])
+  LocalRecipientsTable.setMappers(IForwardList + IAliasesList + [IMaildropRepository, POSTMASTER, RecipientSpec])
   inject(LocalRecipientsTable)
   
   SubmissionRecipientTable = RecipientTable.new()

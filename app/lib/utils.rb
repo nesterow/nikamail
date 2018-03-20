@@ -36,6 +36,16 @@ def confile(path)
   return file
 end
 
+def storagefile(path)
+  root = File.dirname(__FILE__).gsub('/lib','').gsub('/app', '/storage')
+  unless Dir.exist? root
+    FileUtils.mkdir_p(root)
+  end
+  file = "#{root}/#{path}"
+  FileUtils.touch file
+  return file
+end
+
 
 def generate_cert
   path = confile("keystore.jks")

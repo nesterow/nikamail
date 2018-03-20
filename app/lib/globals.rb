@@ -17,7 +17,7 @@ module Kernel
     end
     
     def load
-      data = File.read(confile(@path))
+      data = File.read(storagefile(@path))
       @data = data.length != 0 && Marshal.load(data) || Hash.new
       @data
     end
