@@ -17,9 +17,14 @@ module Mireka
   DirectSender.setMailToHostTransmitter(inject(IMailToHostTransmitter))
   inject(DirectSender)
   
+  IMailer = NameAddr.new()
+  IMailer.setDisplayName('Mail Delivery System')
+  IMailer.setAddressSpec("no-reply@#{DOMAIN}")
+  inject(IMailer)
+  
   MailCreator = DsnMailCreator.new()
   MailCreator.setReportingMtaName(DOMAIN)
-  MailCreator.setFromAddress(MAILER)
+  MailCreator.setFromAddress(IMailer)
   inject(MailCreator)
   
   

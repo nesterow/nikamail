@@ -69,10 +69,6 @@ module Mireka
   ISrs.setLocalDomains(domains)
   inject(ISrs)
   
-  MAILER = NameAddr.new()
-  MAILER.setDisplayName('Mail Delivery System')
-  MAILER.setAddressSpec("no-reply@#{DOMAIN}")
-  inject(MAILER)
   
   REPOSITORY = MaildropRepository.new()
   REPOSITORY.setDir(folder('storage/maildrops'))
