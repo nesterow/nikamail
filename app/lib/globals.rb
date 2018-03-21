@@ -24,7 +24,7 @@ module Kernel
     
     def save
       dump = Marshal.dump(@data)
-      file = File.open confile(@path), 'w'
+      file = File.open storagefile(@path), 'w'
       file.write(dump)
       file.close
       load()

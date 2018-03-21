@@ -36,13 +36,13 @@ def confile(path)
   return file
 end
 
-def storagefile(path)
+def storagefile(path, create = true)
   root = File.dirname(__FILE__).gsub('/lib','').gsub('/app', '/storage')
   unless Dir.exist? root
     FileUtils.mkdir_p(root)
   end
   file = "#{root}/#{path}"
-  FileUtils.touch file
+  FileUtils.touch(file) if create
   return file
 end
 

@@ -1,6 +1,7 @@
 require 'singleton'
 require_relative 'lib/globals'
 require_relative 'lib/server'
+require_relative 'lib/drops'
 require_relative 'lib/console'
 
 
@@ -40,8 +41,10 @@ end
 $thread = Main.new()
 $thread.start()
 
-arg = ARGV[0]
+drops = MaildropWatcher.new()
+drops.start()
 
+arg = ARGV[0]
 if arg == 'console'
   Console.new
 else
