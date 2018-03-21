@@ -42,9 +42,10 @@ Commands
 Configuration
 -------------
 
-
-### Managing NikaMail
-There are two ways to manage server: 1. Using command line tool 2. Using JSON RPC.
+### Managing
+There are two ways to manage server:
+1. Using command line tool
+2. Using JSON RPC.
 
 #### 1. Using command line
 NikaMail command line tool is simply a Ruby IRB. That means you should use all commands as you would use ruby methods.
