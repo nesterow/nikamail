@@ -34,7 +34,12 @@ class MaildropWatcher < J::Thread
     hooks = Hooks.registry[name]
     for cb in hooks
       file = storagefile("maildrops/#{name}/#{uid}.eml", false)
-      cb.call(Eml.new(file))
+      begin
+        cb.call(Eml.new(file))
+      rescue Exception => e
+        puts 'Error while executing hook'
+        puts e.message
+      end
     end
   end
   
