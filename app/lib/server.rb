@@ -1,7 +1,6 @@
 require_relative './mireka'
 require_relative './queue'
 require_relative './users'
-require_relative './filter'
 require_relative '../filters'
 require_relative './jsonrpc'
 
