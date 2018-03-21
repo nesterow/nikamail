@@ -1,5 +1,15 @@
 NikaMail
 ========
+- SMTP Server
+- SMTP MTA
+- POP3 Server
+- STARTTLS
+
+NikaMail is Mireka on JRuby.
+
+
+##### *Currently in pre-alpha development. There can be untested features on 'master' branch before complete release
+
 
 Installation
 ------------
@@ -33,7 +43,7 @@ Commands
 Configuration
 -------------
 
-###STARTTLS/SSL
+### STARTTLS/SSL
 
 1. Import a certificate signed for your domain into Java Key Store.
 ```
@@ -54,5 +64,23 @@ STARTTLS = true
 KEYSTORE = "keystore.jks"
 KEYSTORE_PASSWORD = "password"
 ```
+
+### Managing NikaMail
+There are two ways to manage server: 1. Using command line tool 2. Using JSON RPC.
+
+#### 1. Using command line
+NikaMail command line tool is simply a Ruby IRB. That means you should use all commands as you would use ruby methods.
+
+Example:
+```ruby
+
+    (irb)> adduser 'mario', 'password123'  # add a new user
+    (irb)> adduser 'luiji', 'password123'
+    (irb)> setalias 'mario+castle@domain.fqdn', 'mario@domain.fqdn' # set alias
+    (irb)> forward 'bros@domain.fqdn', 'mario@domain.fqdn', 'luiji@domain.fqdn'
+
+```
+- Server does not need restart when you add new users.
+- However you have to restart server after adding *aliases*, *forward lists*, *mailing lists* and other *filters*
 
 
