@@ -4,14 +4,20 @@ module Hooks
   def self.registry
   @r||={
     
-      mario: [ method(:printme) ]
+      mario: [ method(:print_mario_emails) ]
   
   }
   end
   
-  def self.printme(file)
-    puts "Post-prcessing is here"
-    puts file
+  def self.print_mario_emails(eml)
+    puts "Post-processing is here"
+    puts "
+      From: #{eml.From}
+      Subject: #{eml.Subject}
+      Date: #{eml.Date}
+      Files: #{eml.Files.map {|f| f.filename}}
+      Body: #{eml.Body.Content}
+    "
   end
   
 

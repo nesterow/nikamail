@@ -1,4 +1,5 @@
 require_relative './globals'
+require_relative './parser/eml'
 require_relative '../hooks'
 
 class MaildropWatcher < J::Thread
@@ -33,7 +34,7 @@ class MaildropWatcher < J::Thread
     hooks = Hooks.registry[name]
     for cb in hooks
       file = storagefile("maildrops/#{name}/#{uid}.eml", false)
-      cb.call(file)
+      cb.call(Eml.new(file))
     end
   end
   

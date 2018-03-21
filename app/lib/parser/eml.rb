@@ -69,11 +69,14 @@ class Eml
       @Content = body.sub(@header,'').strip.split(/^\s*$/)[0].strip
       
       filename = /filename=(.+$)/.match(@header).to_a[1]
-      @filename = filename.gsub('"', '') unless filename.nil?
+      @filename = filename.gsub('"', '').strip unless filename.nil?
       
       if @ContentType.include? 'multipart/related'
         @related = true
         parse()
+      else
+        @Html = ''
+        @Images = []
       end
       
     end
@@ -129,6 +132,7 @@ class Eml
       }[0]
       
     else
+      @Files = []
       @Body = Part.new(@raw)
     end
   
