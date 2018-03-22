@@ -1,13 +1,17 @@
-NikaMail
+NikaMail ~0.1a
 ========
+Portable SMTP/POP3 server and MTA for JVM featuring JRuby.
+
+* SMTP Server
+* POP3 Server
+* MTA
+* STARTTLS
+* JSON-RPC
+* Email post-processing
+* JRuby
+* [Mireka](http://mireka.org/) filters in java
+
 NikaMail is [Mireka](http://mireka.org/) on JRuby.
-- SMTP Server
-- MTA
-- POP3 Server
-- STARTTLS
-
-
-##### *Currently in pre-alpha development. There can be untested features on 'master' branch before complete release
 
 
 Installation
@@ -27,6 +31,8 @@ Installation
 3. Run interactive console
     - `make console`
     
+### Can it run without docker?
+    * Yes! The command is `bin/jruby app/main.rb`
 
 Commands
 --------
@@ -34,8 +40,9 @@ Commands
     make build         - (re)build docker container and java extensions
     make console       - run ineractive console
     make run           - run NikaMail
-    make run-daemon    - run NikaMail in daemon mode
-    make stop-daemon   - stop daemon
+    make start         - run NikaMail in daemon mode
+    make stop          - stop daemon
+    make restart       - restart daemon
 ```
 
 
@@ -44,6 +51,7 @@ Configuration
 
 ### Managing
 There are two ways to manage server:
+
 1. Using command line tool
 2. Using JSON RPC.
 
