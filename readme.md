@@ -1,8 +1,8 @@
 NikaMail ~0.1a
 ========
 Portable SMTP/POP3 server and MTA for JVM featuring JRuby.
-NikaMail is a zero-config solution. You can run it without wasting  time on pre-configuration. Only dependency is Java.
-NikaMail is [Mireka](http://mireka.org/) on JRuby.
+**NikaMail** is a zero-config solution. You can run it without wasting  time on pre-configuration. Only dependency is Java.
+**NikaMail** is **[Mireka](http://mireka.org/)** on JRuby.
 
 * SMTP Server
 * POP3 Server
@@ -26,7 +26,7 @@ Installation
     - `newgrp docker` - refresh group permissions
 
 2. Clone & Buld
-    - `git clone git@bitbucket.org:nesterow/nikamail.git` - Clone latest version from 'master' branch
+    - `git clone git@bitbucket.org:nesterow/nikamail.git` - clone latest version from 'master' branch
     - `cd ./nikamail` 
     - `make build`
 
@@ -57,7 +57,7 @@ There are two ways to manage server:
 1. Using command line tool
 2. Using JSON RPC.
 
-#### 1. Using command line
+#### Using command line
 NikaMail command line tool is simply a Ruby IRB. That means you should use all commands as you would use ruby methods.
 
 Example:
@@ -75,20 +75,20 @@ Example:
 
 ### STARTTLS/SSL
 
-1. Import a certificate signed for your domain into Java Key Store.
+* Import a certificate signed for your domain into Java Key Store.
 ```
     keytool -importcert -file certificate.cer -keystore keystore.jks -alias servercert
 ```
 
-2. Or generate a self-signed certificate
+* Or generate a self-signed certificate
 ```
     keytool -genkey -keyalg RSA -alias servercert -dname "CN=1, OU=2, O=2, L=4, S=5, C=GB" -keystore keystore.jks  -storepass password -keypass password -validity 1440 -keysize 2048 -noprompt
 ```
 
-3. Put `keystore.jks` to the `config` directory
+* Put `keystore.jks` to the `config` directory
 
 
-4. Edit `configuration.rb` as follows:
+* Edit `configuration.rb` as follows:
 ```ruby
 STARTTLS = true
 KEYSTORE = "keystore.jks"
