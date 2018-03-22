@@ -42,6 +42,7 @@ class Eml
   )
   
   def initialize(path)
+    @path = path
     @raw = IO.read(path)
     parse()
   end

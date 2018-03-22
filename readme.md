@@ -1,6 +1,8 @@
 NikaMail ~0.1a
 ========
 Portable SMTP/POP3 server and MTA for JVM featuring JRuby.
+NikaMail is a zero-config solution. You can run it without wasting  time on pre-configuration. Only dependency is Java.
+NikaMail is [Mireka](http://mireka.org/) on JRuby.
 
 * SMTP Server
 * POP3 Server
@@ -11,7 +13,7 @@ Portable SMTP/POP3 server and MTA for JVM featuring JRuby.
 * JRuby
 * [Mireka](http://mireka.org/) filters in java
 
-NikaMail is [Mireka](http://mireka.org/) on JRuby.
+
 
 
 Installation
@@ -19,9 +21,9 @@ Installation
 
 1. Install Dependencies
     - `sudo apt install openjdk-8-jdk-headless`
-    - `sudo apt install docker.io` - Docker
-    - `sudo gpasswd -a $USER docker` - Add yourself to docker group
-    - `newgrp docker` - Refresh group permissions
+    - `sudo apt install docker.io` - docker
+    - `sudo gpasswd -a $USER docker` - add yourself to docker group
+    - `newgrp docker` - refresh group permissions
 
 2. Clone & Buld
     - `git clone git@bitbucket.org:nesterow/nikamail.git` - Clone latest version from 'master' branch
