@@ -2,7 +2,7 @@ NikaMail ~0.1a
 ========
 Portable SMTP/POP3 server and MTA for JVM featuring JRuby.
 **NikaMail** is a zero-config solution. You can run it without wasting  time on pre-configuration. Only dependency is Java.
-**NikaMail** is [Mireka](http://mireka.org/) on JRuby.
+**NikaMail** is **[Mireka](http://mireka.org/)** on JRuby.
 
 * SMTP Server
 * POP3 Server
