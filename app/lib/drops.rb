@@ -1,5 +1,5 @@
 require_relative './globals'
-require_relative './parser/eml'
+require_relative './extra/eml'
 require_relative '../hooks'
 
 class MaildropWatcher < J::Thread

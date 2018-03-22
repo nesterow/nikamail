@@ -4,6 +4,8 @@ class Console
     sleep 1
     require 'irb'
     
+    @dir = File.dirname(__FILE__)
+    
     IRB.setup(nil)
     IRB.conf[:AUTO_INDENT] = true
     IRB.conf[:APP_NAME] = "nika"
