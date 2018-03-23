@@ -1,4 +1,4 @@
-NikaMail ~0.1a
+NikaMail ~0.2a
 ========
 **NikaMail** is **[Mireka](http://mireka.org/)** on JRuby.
 
