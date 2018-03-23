@@ -27,7 +27,7 @@ Usage:
   
   email.setTo('addr')
   email.setSubject('addr')
-  email.sendTo('addr')
+  email.redirect([box1, box2])
   
 =end
 
