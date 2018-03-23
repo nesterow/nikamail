@@ -1,3 +1,4 @@
 storage/
 config/keystore.jks
 config/users.storage
+web/
