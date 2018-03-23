@@ -1,7 +1,15 @@
 module Mireka
   
+  IAuthIPAddress = ConnectedFromAuthorizedIpAddress.new
+  IAuthIPAddress.setAddresses([
+    IpAddress.new('127.0.0.1')
+  ])
+  
   SubRejectIfUnauthenticatedFilter = RejectIfUnauthenticated.new
-  SubRejectIfUnauthenticatedFilter.setAuthenticatedSpecifications([inject(SmtpAuthenticated.new)])
+  SubRejectIfUnauthenticatedFilter.setAuthenticatedSpecifications([
+    inject(SmtpAuthenticated.new),
+    inject(IAuthIPAddress)
+  ])
   
   
   SubLookupDestinationFilter = LookupDestinationFilter.new

@@ -14,6 +14,7 @@ module Hooks
     puts "
       From: #{eml.From}
       Subject: #{eml.Subject}
+      SubjectID: #{eml.SubjectID}
       Date: #{eml.Date}
       Files: #{eml.Files.map {|f| f.filename}}
       Body: #{eml.Body.Content}

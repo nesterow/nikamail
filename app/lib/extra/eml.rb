@@ -41,6 +41,7 @@ class Eml
     :From,
     :To,
     :Subject,
+    :SubjectID,
     :Date,
     :XMailer,
     :ContentType,
@@ -68,8 +69,9 @@ class Eml
     addr = boxes.map { |box|
       box.to_s + '@localhost'
     }
-    Net::SMTP.start('localhost', 25) do |smtp|
-      smtp.send_message @raw, 'drop-agent@localhost', *addr
+    Net::SMTP.start('localhost', 587) do |smtp|
+      body = @raw.sub!(/.*?(?=From:)/im, "")
+      smtp.send_message body, 'drop-agent@localhost', *addr
     end
   end
   
@@ -137,6 +139,7 @@ class Eml
     @From = /^From: (.+$)/.match(@header).to_a[1]
     @To = /^To: (.+$)/.match(@header).to_a[1]
     @Subject = /^Subject: (.+$)/.match(@header).to_a[1]
+    @SubjectID = /Subject: (.*)\[(.+)\]/.match(@header).to_a.last
     @Date = /^Date: (.+$)/.match(@header).to_a[1]
     @XMailer = /^X-Mailer: (.+$)/.match(@header).to_a[1]
     @ContentType = /^Content-Type: (.+$)/.match(@header).to_a[1]
