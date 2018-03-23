@@ -22,7 +22,7 @@ module Hooks
   
   def self.redirect_mario_email(eml)
     eml.setSubject("Redirected")
-    eml.redirect(:luigi, :princess)
+    eml.copy(:luigi, :princess)
   end
   
 

@@ -27,7 +27,7 @@ Usage:
   
   email.setTo('addr')
   email.setSubject('addr')
-  email.redirect([box1, box2])
+  email.copy([box1, box2])
   
 =end
 
@@ -64,13 +64,17 @@ class Eml
     parse()
   end
   
-  def redirect(*boxes)
+  def copy(*boxes)
     addr = boxes.map { |box|
       box.to_s + '@localhost'
     }
     Net::SMTP.start('localhost', 25) do |smtp|
       smtp.send_message @raw, 'drop-agent@localhost', *addr
     end
+  end
+  
+  def clean
+    File.delete(@path) if File.exist? @path
   end
   
   private
