@@ -24,8 +24,15 @@ Usage:
       email.Body.Html
       email.Body.Images[]
         Image.Content
-
+  
+  email.setTo('addr')
+  email.setSubject('addr')
+  email.copy([box1, box2])
+  
 =end
+
+require 'net/smtp'
+
 class Eml
   
   attr_accessor(
@@ -34,6 +41,7 @@ class Eml
     :From,
     :To,
     :Subject,
+    :SubjectID,
     :Date,
     :XMailer,
     :ContentType,
@@ -47,6 +55,29 @@ class Eml
     parse()
   end
   
+  def setTo(addr)
+    @raw = @raw.sub(@To, addr)
+    parse()
+  end
+  
+  def setSubject(subj)
+    @raw = @raw.sub(@Subject, subj)
+    parse()
+  end
+  
+  def copy(*boxes)
+    addr = boxes.map { |box|
+      box.to_s + '@localhost'
+    }
+    Net::SMTP.start('localhost', 587) do |smtp|
+      body = @raw.sub!(/.*?(?=From:)/im, "")
+      smtp.send_message body, 'drop-agent@localhost', *addr
+    end
+  end
+  
+  def clean
+    File.delete(@path) if File.exist? @path
+  end
   
   private
   
@@ -108,6 +139,7 @@ class Eml
     @From = /^From: (.+$)/.match(@header).to_a[1]
     @To = /^To: (.+$)/.match(@header).to_a[1]
     @Subject = /^Subject: (.+$)/.match(@header).to_a[1]
+    @SubjectID = /Subject: (.*)\[(.+)\]/.match(@header).to_a.last
     @Date = /^Date: (.+$)/.match(@header).to_a[1]
     @XMailer = /^X-Mailer: (.+$)/.match(@header).to_a[1]
     @ContentType = /^Content-Type: (.+$)/.match(@header).to_a[1]

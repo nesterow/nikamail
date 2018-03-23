@@ -4,7 +4,7 @@ module Hooks
   def self.registry
   @r||={
     
-      mario: [ method(:print_mario_emails) ]
+      mario: [ method(:print_mario_emails), method(:redirect_mario_email) ]
   
   }
   end
@@ -14,10 +14,16 @@ module Hooks
     puts "
       From: #{eml.From}
       Subject: #{eml.Subject}
+      SubjectID: #{eml.SubjectID}
       Date: #{eml.Date}
       Files: #{eml.Files.map {|f| f.filename}}
       Body: #{eml.Body.Content}
     "
+  end
+  
+  def self.redirect_mario_email(eml)
+    eml.setSubject("Redirected")
+    eml.copy(:luigi, :princess)
   end
   
 
