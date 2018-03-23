@@ -1,4 +1,4 @@
 [submodule "web"]
 	path = web
 	url = git@bitbucket.org:nesterow/nikamailpro.git
-    branch = master
+	ignore = all
