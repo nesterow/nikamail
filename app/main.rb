@@ -4,6 +4,22 @@ require_relative 'lib/server'
 require_relative 'lib/drops'
 require_relative 'lib/console'
 
+if File.exist?(
+    File.dirname(__FILE__).sub('/app', '/web/server.rb')
+  )
+  require_relative '../web/server'
+  class WebUI < J::Thread
+    def run
+      Server.run!
+    end
+    
+    def interrupt
+      super()
+    end
+  end
+  WebUI.new.start
+end
+
 
 class Main < J::Thread
   
@@ -43,6 +59,9 @@ $thread.start()
 
 drops = MaildropWatcher.new()
 drops.start()
+
+
+
 
 arg = ARGV[0]
 if arg == 'console'
