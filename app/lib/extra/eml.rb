@@ -24,8 +24,15 @@ Usage:
       email.Body.Html
       email.Body.Images[]
         Image.Content
-
+  
+  email.setTo('addr')
+  email.setSubject('addr')
+  email.sendTo('addr')
+  
 =end
+
+require 'net/smtp'
+
 class Eml
   
   attr_accessor(
@@ -47,6 +54,24 @@ class Eml
     parse()
   end
   
+  def setTo(addr)
+    @raw = @raw.sub(@To, addr)
+    parse()
+  end
+  
+  def setSubject(subj)
+    @raw = @raw.sub(@Subject, subj)
+    parse()
+  end
+  
+  def redirect(*boxes)
+    addr = boxes.map { |box|
+      box.to_s + '@localhost'
+    }
+    Net::SMTP.start('localhost', 25) do |smtp|
+      smtp.send_message @raw, 'drop-agent@localhost', *addr
+    end
+  end
   
   private
   
