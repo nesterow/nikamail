@@ -1,6 +1,8 @@
 
 module Mireka
   
+  java_import "mireka.login.IGlobalUsers"
+  
   class LoginSpec
     java_implements Mireka::LoginSpecification
     java_signature 'LoginResult evaluatePlain(String username, String password)'
@@ -84,6 +86,7 @@ module Mireka
       raise "User Does't Exist"
     end
     ILoginSpecification.removeUser(name)
+    USERS.removeUser(name)
     STORAGE.remove(name)
   end
   
@@ -164,7 +167,7 @@ module Mireka
   STORAGE = Storage.new('users.storage')
   
   
-  USERS = GlobalUsers.new()
+  USERS = IGlobalUsers.new()
   USERS.setUsers(getUsers())
   inject(USERS)
   
