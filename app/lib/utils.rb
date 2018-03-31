@@ -46,6 +46,15 @@ def storagefile(path, create = true)
   return file
 end
 
+def storagedir(path)
+  root = File.dirname(__FILE__).gsub('/lib','').gsub('/app', '/storage')
+  unless Dir.exist? root
+    FileUtils.mkdir_p(root)
+  end
+  file = "#{root}/#{path}"
+  FileUtils.mkdir_p(file) unless Dir.exist?(file)
+  return file
+end
 
 def generate_cert
   path = confile("keystore.jks")
