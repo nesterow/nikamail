@@ -39,7 +39,9 @@ class Eml
     :raw,
     :header,
     :From,
+    :AddressFrom,
     :To,
+    :AddressTo,
     :Subject,
     :SubjectID,
     :Date,
@@ -49,14 +51,27 @@ class Eml
     :Body
   )
   
-  def initialize(path)
-    @path = path
-    @raw = IO.read(path)
+  def initialize(data, raw=false)
+    unless raw
+      @path = data
+      @raw = IO.read(@path)
+    else
+      @raw = data
+    end
     parse()
+  end
+  
+  def copy
+    Eml.new(@raw, true)
   end
   
   def setTo(addr)
     @raw = @raw.sub(@To, addr)
+    parse()
+  end
+  
+  def setFrom(addr)
+    @raw = @raw.sub(@From, addr)
     parse()
   end
   
@@ -137,7 +152,9 @@ class Eml
   def parse
     @header = @raw.split(/^\s*$/)[0]
     @From = /^From: (.+$)/.match(@header).to_a[1]
+    @AddressFrom = /\<(.+)\>/.match(@From).to_a[1] || @From
     @To = /^To: (.+$)/.match(@header).to_a[1]
+    @AddressTo = /\<(.+)\>/.match(@To).to_a[1] || @To
     @Subject = /^Subject: (.+$)/.match(@header).to_a[1]
     @SubjectID = /Subject: (.*)\[(.+)\]/.match(@header).to_a.last
     @Date = /^Date: (.+$)/.match(@header).to_a[1]

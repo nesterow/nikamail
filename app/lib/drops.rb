@@ -18,7 +18,9 @@ class MaildropWatcher < J::Thread
   
   def check
     for name in @names
-      data = File.read storagefile("maildrops/#{name}/uid.txt", false)
+      f = storagefile("maildrops/#{name}/uid.txt", false)
+      next unless File.exist? f
+      data = File.read f
       old_uid = @uidtable.get(name)
       current_uid = uid_to_int(data)
       if old_uid < current_uid

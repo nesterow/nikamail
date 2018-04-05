@@ -1,13 +1,24 @@
 # Post-processing hooks
+require_relative "lib/extra/listings"
+
 module Hooks
   
-  def self.registry
-  @r||={
-    
-      mario: [ method(:print_mario_emails), method(:redirect_mario_email) ]
-  
-  }
+  def self.load_extensions
+    ListingsExtension.new(@registry)
   end
+  
+  def self.registry
+    return @registry if @registry
+    @registry={
+      
+      mario: [ method(:print_mario_emails), method(:redirect_mario_email) ]
+    
+    }
+    load_extensions()
+    return @registry
+  end
+  
+  
   
   def self.print_mario_emails(eml)
     puts "Post-processing is here"
