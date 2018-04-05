@@ -57,7 +57,7 @@ class ListingsExtension
   def handle_privategroup(eml, data)
     list = data[:list]
     sender = eml.AddressFrom.strip
-    member = (list.select { |k|
+    member = list.select { |k|
       k['address'].include?("<#{sender}>")
     }[0]
     return unless member

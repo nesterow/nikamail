@@ -5,6 +5,11 @@ module Hooks
   
   def self.load_extensions
     ListingsExtension.new(@registry)
+    
+    begin
+      $drops.reload()
+    rescue
+    end
   end
   
   def self.registry

@@ -6,10 +6,17 @@ class MaildropWatcher < J::Thread
   
   def initialize
     @uidtable = Storage.new('maildrop.indexes')
+    @pause = false
+    reload()
+  end
+  
+  def reload
+    @pause = true
     @names = Hooks.registry.keys
     for name in @names
       @uidtable.add(name, 0) if @uidtable.get(name).nil?
     end
+    @pause = false
   end
   
   def uid_to_int uid
@@ -48,7 +55,7 @@ class MaildropWatcher < J::Thread
   def run
     while true do
       sleep 0.3
-      check()
+      check() unless @pause
     end
   end
   

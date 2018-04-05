@@ -57,8 +57,8 @@ end
 $thread = Main.new()
 $thread.start()
 
-drops = MaildropWatcher.new()
-drops.start()
+$drops = MaildropWatcher.new()
+$drops.start()
 
 
 
