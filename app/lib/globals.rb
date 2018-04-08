@@ -16,6 +16,11 @@ module Kernel
       load()
     end
     
+    def clean
+      @data = Hash.new
+      save()
+    end
+    
     def load
       data = File.read(storagefile(@path))
       @data = data.length != 0 && Marshal.load(data) || Hash.new

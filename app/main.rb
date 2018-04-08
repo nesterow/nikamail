@@ -24,22 +24,22 @@ end
 class Main < J::Thread
   
   def run
-    Mireka::ISubmitQue.start()
-    Mireka::IRetryQue.start()
-    Mireka::IDsnQue.start()
-    Mireka.subserver.start()
-    Mireka.mxserver.start()
-    Mireka.popserver.start()
+    Mireka::ISubmitQue.start() if MTA_SERVER_ON
+    Mireka::IRetryQue.start() if MTA_SERVER_ON
+    Mireka::IDsnQue.start() if MTA_SERVER_ON
+    Mireka.subserver.start() if MX_SERVER_ON
+    Mireka.mxserver.start() if MX_SERVER_ON
+    Mireka.popserver.start() if POP3_SERVER_ON
     Mireka.rpcserver.start()
   end
   
   def interrupt
-    Mireka::ISubmitQue.shutdown()
-    Mireka::IDsnQue.shutdown()
-    Mireka::IRetryQue.shutdown()
-    Mireka.subserver.stop()
-    Mireka.mxserver.stop()
-    Mireka.popserver.shutdown()
+    Mireka::ISubmitQue.shutdown() if MTA_SERVER_ON
+    Mireka::IDsnQue.shutdown() if MTA_SERVER_ON
+    Mireka::IRetryQue.shutdown() if MTA_SERVER_ON
+    Mireka.subserver.stop() if MTA_SERVER_ON
+    Mireka.mxserver.stop() if MX_SERVER_ON
+    Mireka.popserver.shutdown() if POP3_SERVER_ON
     super()
   end
   
