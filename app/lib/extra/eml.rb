@@ -32,7 +32,7 @@ Usage:
 =end
 
 require 'net/smtp'
-
+require 'securerandom'
 class Eml
   
   attr_accessor(
@@ -63,6 +63,13 @@ class Eml
   
   def copy
     Eml.new(@raw, true)
+  end
+  
+  def cleanHeaders
+    header = "From: " + @header.split("From: ")[1]
+    header = header.sub(/^Message-ID: (.+$)/, "Message-ID: <#{SecureRandom.hex(12)}@nika-relay>")
+    @raw = @raw.sub(@header, header)
+    parse()
   end
   
   def setTo(addr)

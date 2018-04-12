@@ -1,3 +1,3 @@
 KEYSTORE_PASSWORD="password"
-KEYSTORE="updated.jks"
+KEYSTORE="keystore.jks"
 KEYSTORE_ALIAS="servercert"

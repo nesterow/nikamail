@@ -5,15 +5,15 @@ RELAY.start()
 class ListingsExtension
   
   def initialize(registry)
-    lists = Dir["#{storagedir("lists")}/*.list"].map {|l|
-      begin
-        return Marshal.load(File.read(l))
-      rescue
-        return nil
+    lists = []
+    for l in Dir["#{storagedir("lists")}/*.list"]
+      begin 
+        lists.push Marshal.load(File.read(l))
+      rescue Exception => e
+        puts e.message 
       end
-    }.select { |l|
-      !l.nil?
-    }
+    end
+
     @listings = {}
     for list in lists
       @listings["#{list[:relay]}@#{DOMAIN}"] = @listings["#{list[:mailbox]}@#{DOMAIN}"] = list
@@ -50,6 +50,7 @@ class ListingsExtension
     
     list.each { |k|
       email = Eml.new(eml.raw, true)
+      email.cleanHeaders
       email.setTo(k["address"])
       email.setFrom(from)
       RELAY.put(email)
@@ -71,6 +72,7 @@ class ListingsExtension
     from = "#{member['address'].sub!(/\<(.*)\>/,'')} <#{data[:mailbox]}@#{DOMAIN}>"
     list.select { |k| k['address'] != member['address']}.each { |k|
       email = Eml.new(eml.raw, true)
+      email.cleanHeaders
       email.setTo(k["address"])
       email.setFrom(from)
       RELAY.put(email)

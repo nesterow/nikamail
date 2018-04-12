@@ -10,7 +10,7 @@ class Relay < J::Thread
     begin
       eml = Eml.new(path)
       Net::SMTP.start('localhost', 587) do |smtp|
-        smtp.send_message eml.raw, 'relay-agent@localhost', eml.AddressTo
+        smtp.send_message eml.raw, eml.AddressFrom, eml.AddressTo
       end
       File.delete(path)
     rescue
