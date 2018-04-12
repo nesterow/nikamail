@@ -1,0 +1,54 @@
+Return-Path: <someuser@gmail.com>
+Received-SPF: pass (spfCheck: domain of _spf.google.com designates 209.85.160.52 as permitted sender) client-ip=209.85.160.52; envelope-from=arch.nesterov@gmail.com; helo=mail-pl0-f52.google.com;
+Received: from mail-pl0-f52.google.com (mail-pl0-f52.google.com [209.85.160.52])
+        by nika.run
+        with SMTP (Mireka 4.2.0) id JFWQMGTF
+        for bugs@nika.run;
+        Thu, 12 Apr 2018 12:28:09 -0400 (EDT)
+Received: by mail-pl0-f52.google.com with SMTP id e7-v6so4260082plt.6
+        for <bugs@nika.run>; Thu, 12 Apr 2018 09:28:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=0bFszJNXwSSvb/uavtZWm2ZGv2QrpLVGk+Zzwc2lXFc=;
+        b=lPq56PBi9WtXVpJaqj8zq+i3UDcbHkiZWJd/OqSSHSVweq7wGCH6YOghPgQLawKOL0
+         7mPLIGLXogP/irVW/X7qUqETXfmI/Md6nEF8UmcedUmHl6QRfXaLl2omfXabuDxBQ8q/
+         euNKWh+HT3W/ex6L/Kv8iQgVsYNjnFIjEobgrDeyJF+z2vAjvJLsqFZFg3pf6YtEafUF
+         4ZwxYQwEAElnxjjHDnVZpkAsUAh9/7Oci77XQ9n7H/EacmwZs6yew1iQz3Ui/16fmyYZ
+         +7++vSWsnv7B7I/Az0m+xPAXHky3hcfzhYLi2yrAmetz8gVR4wKoSsW9jB3GarulMIJi
+         aX3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=0bFszJNXwSSvb/uavtZWm2ZGv2QrpLVGk+Zzwc2lXFc=;
+        b=GZVIpHnF91D9XlbeNNY5sm6FHWPWVYCmYn5u2SuDF7DhC9X/3hLRsioU+ayvSVf49N
+         DjpZQAl5+5LAGuBfipkOzu0vT4SdttJLsXQcw2WkLzeWI1R9GdJSOIxiTf81a16QHKOf
+         ZH2v4Gr8uKa4ePcGp7uqjE/CJweyaB4WFq2wYAi+rBefp+EzE5vg8XeLM8KZszz5Bf2E
+         m22idWmWWzEQ7Q2A7+B0JTMhAxndBlNgTffbVJTRI3pzKLn2HvIr+XvK73nUN9NjatzK
+         c1qNXHHghPvJ2ahSjAwT/HM0v6Efj2l981GyzW/z7paASqWrlxZZ6N14zfg0Jr31VPJJ
+         KCaw==
+X-Gm-Message-State: ALQs6tD+GKZIw6KlGWFCz2kjcwI2VWkmrTXkRKynSmqo71Z9H9jV+66G
+	t3W2nk2/xQ/XNBP+jANSg6CNoPEPIA55sgUoJ1OFNQ==
+X-Google-Smtp-Source: AIpwx49nX3h5PW+KNHOnNW34GgaN00DdbSd1j9Nh2lZnEZWiqmpcsGIXsFbauh3TeVMT99OieRm08XgfKpORufzuqKQ=
+X-Received: by 2002:a17:902:6909:: with SMTP id j9-v6mr1788549plk.92.1523550488097;
+ Thu, 12 Apr 2018 09:28:08 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.100.184.72 with HTTP; Thu, 12 Apr 2018 09:28:07 -0700 (PDT)
+From: Some User <someuser@gmail.com>
+Date: Thu, 12 Apr 2018 23:28:07 +0700
+Message-ID: <CAJn+FG-BK8vT-x2mKhtLC4GuCWkD_F=0raEjYdweBY30P=Cvkw@mail.gmail.com>
+Subject: Parser does not work with gmail headers
+To: bugs@nika.run
+Content-Type: multipart/alternative; boundary="000000000000a3fa6d0569a93ddd"
+
+--000000000000a3fa6d0569a93ddd
+Content-Type: text/plain; charset="UTF-8"
+
+Parser gets wrong 'From' field.
+
+--000000000000a3fa6d0569a93ddd
+Content-Type: text/html; charset="UTF-8"
+
+<div dir="ltr">Parser gets wrong &#39;From&#39; field.</div>
+
+--000000000000a3fa6d0569a93ddd--
