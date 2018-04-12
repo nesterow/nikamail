@@ -26,13 +26,13 @@ def folder(path)
   path
 end
 
-def confile(path)
+def confile(path, create = true)
   root = File.dirname(__FILE__).gsub('/lib','').gsub('/app', '/config')
   unless Dir.exist? root
     FileUtils.mkdir_p(root)
   end
   file = "#{root}/#{path}"
-  FileUtils.touch file
+  FileUtils.touch(file) if create
   return file
 end
 

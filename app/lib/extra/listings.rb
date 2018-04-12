@@ -6,7 +6,13 @@ class ListingsExtension
   
   def initialize(registry)
     lists = Dir["#{storagedir("lists")}/*.list"].map {|l|
-      Marshal.load(File.read(l))
+      begin
+        return Marshal.load(File.read(l))
+      rescue
+        return nil
+      end
+    }.select { |l|
+      !l.nil?
     }
     @listings = {}
     for list in lists

@@ -22,9 +22,13 @@ module Kernel
     end
     
     def load
-      data = File.read(storagefile(@path))
-      @data = data.length != 0 && Marshal.load(data) || Hash.new
-      @data
+      begin
+        data = File.read(storagefile(@path))
+        @data = data.length != 0 && Marshal.load(data) || Hash.new
+      rescue
+        puts "Failed to load file"
+        @data = Hash.new
+      end
     end
     
     def save
