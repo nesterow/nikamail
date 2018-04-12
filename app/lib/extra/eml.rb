@@ -118,7 +118,7 @@ class Eml
       filename = /filename=(.+$)/.match(@header).to_a[1]
       @filename = filename.gsub('"', '').strip unless filename.nil?
       
-      if @ContentType.include? 'multipart/related'
+      if @ContentType.include?('multipart/related')
         @related = true
         parse()
       else
@@ -126,6 +126,10 @@ class Eml
         @Images = []
       end
       
+    end
+    
+    def related?
+      @related
     end
     
     private

@@ -1,11 +1,13 @@
 build:
+	rm -rf lib/ext/*
+	rm -f lib/ext.jar
 	javac -cp ".:lib/*:lib/ext/*" -d lib/ext $$(find ./app/lib/java/* | grep .java)
 	cd lib/ext && jar -cvf ../ext.jar *
 	docker build -t nikamail .
 
 build-java:
-	rm -r lib/ext/*
-	rm lib/ext.jar
+	rm -rf lib/ext/*
+	rm -f lib/ext.jar
 	javac -cp ".:lib/*:lib/ext/*" -d lib/ext $$(find ./app/lib/java/* | grep .java)
 	cd lib/ext && jar -cvf ../ext.jar *
 
