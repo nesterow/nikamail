@@ -5,12 +5,20 @@ module Mireka
   RetryTransmitter = inject(QueuingTransmitter.new())
   OutgoingRegistry = inject(OutgoingConnectionsRegistry.new())
   
+  IClientFactory = ClientFactory.new
+  IClientFactory.setHelo(DOMAIN)
+  
+  IBackendServer = BackendServer.new
+  IBackendServer.setClientFactory(inject(IClientFactory))
+  IBackendServer.setHost('localhost')
+  IBackendServer.setPort(2525)
+  inject(IBackendServer)
+  
   IMailToHostTransmitter = MailToHostTransmitter.new()
   IMailToHostTransmitter.setOutgoingConnectionRegistry(OutgoingRegistry)
   IMailToHostTransmitter.setLogIdFactory(ILogIdFactory)
   
-  IClientFactory = ClientFactory.new
-  IClientFactory.setHelo(DOMAIN)
+  
   
   DirectSender = DirectImmediateSender.new()
   DirectSender.setClientFactory(inject(IClientFactory))

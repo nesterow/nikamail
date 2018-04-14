@@ -21,6 +21,7 @@ module Mireka
     authenticationHandlerFactory = EasyAuthenticationHandlerFactory.new(usernamePasswordValidator)
     @submission.setAuthenticationHandlerFactory(authenticationHandlerFactory)
     @submission.setHostName(DOMAIN)
+    #@submission.setRequireTLS(STARTTLS)
     @submission.setEnableTLS(STARTTLS)
     inject(@submission)
   end

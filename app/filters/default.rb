@@ -16,9 +16,15 @@ module Mireka
   
   RemoteSpec = RecipientSpecificationDestinationPair.new
   RemoteSpec.setRecipientSpecification(inject(AnyRecipient.new))
+  
   SubTransmitter = TransmitterDestination.new
   SubTransmitter.setTransmitter(PrimaryTransmitter)
-  RemoteSpec.setDestination(inject(SubTransmitter))
+  
+  SubRelay = RelayDestination.new
+  SubRelay.setBackendServer(IBackendServer)
+  
+  #RemoteSpec.setDestination(inject(SubTransmitter))
+  RemoteSpec.setDestination(inject(SubRelay))
   inject(RemoteSpec)
   
   SubRecipientTable = RecipientTable.new
