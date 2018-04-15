@@ -1,4 +1,13 @@
 =begin
+
+  Anton A. Nesterov (c) 2018, CC-BY-SA 4.0
+  License: https://creativecommons.org/licenses/by-sa/4.0/
+
+=end
+
+
+=begin about
+
 Basic email parser
 RFC1341, RFC2387, RFC2046
 

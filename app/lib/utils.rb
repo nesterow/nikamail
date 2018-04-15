@@ -1,3 +1,10 @@
+=begin
+
+  Anton A. Nesterov (c) 2018, CC-BY-SA 4.0
+  License: https://creativecommons.org/licenses/by-sa/4.0/
+
+=end
+
 require 'fileutils'
 require 'base64'
 require 'digest'
