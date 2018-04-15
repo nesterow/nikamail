@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-rm config/.install_lock
-rm config/host.list
-rm config/domain.fqdn
-rm config/update*
-rm config/keystore.rb
+rm -f config/.install_lock
+rm -f config/host.list
+rm -f config/domain.fqdn
+rm -f config/update*
+rm -f config/keystore.rb
 rm -r storage
 
 echo -n "local" > config/host.list

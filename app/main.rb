@@ -3,6 +3,7 @@ require_relative 'lib/globals'
 require_relative 'lib/server'
 require_relative 'lib/drops'
 require_relative 'lib/console'
+require_relative 'lib/mta'
 
 if File.exist?(
     File.dirname(__FILE__).sub('/app', '/web/server.rb')
@@ -24,6 +25,7 @@ end
 class Main < J::Thread
   
   def run
+    Mta.instance if MTA_SERVER_ON
     Mireka::ISubmitQue.start() if MTA_SERVER_ON
     Mireka::IRetryQue.start() if MTA_SERVER_ON
     Mireka::IDsnQue.start() if MTA_SERVER_ON
