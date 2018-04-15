@@ -10,6 +10,9 @@ require_relative '../../config/configuration'
 
 
 # MTA
+# Works as a local Smarthost on port 2525
+# Supports STARTTLS and DKIM
+# Certificates are not verified by default
 
 
 Dkim::domain = DOMAIN
@@ -18,8 +21,6 @@ Dkim::private_key = DKIM_PRIVATE_KEY
 
 class Mta
   include Singleton
-  
-  
   
   class Sender
     
@@ -32,28 +33,42 @@ class Mta
     
     
     def self.send(msg)
-      puts msg
-      puts "Sending"
-      puts 1, mgs
-      eml = Eml.new(msg[:data], true)
-      puts eml
+      
+      data = msg[:data].sub(".\r\n","\r\n").strip.gsub(/\r/, "")
+      eml = Eml.new(data, true)
       eml.cleanHeaders
-      puts 2
       domain = eml.AddressTo.split('@').last.strip
-      puts domain
       server = resolve_mx(domain)
-      puts server
-      Net::SMTP.enable_starttls_auto(OpenSSL::SSL::VERIFY_NONE)
-      Net::SMTP.start(server, 25, Dkim::domain) do |smtp|
-        smtp.send_message Dkim.sign(eml.raw), eml.AddressFrom, eml.AddressTo
+      smtp = Net::SMTP.new(server, 25)
+      sslctx = OpenSSL::SSL::SSLContext.new
+      sslctx.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      smtp.enable_starttls_auto(sslctx)
+      result = "250 OK\r\n"
+      smtp.set_debug_output($stderr) if DEBUG
+      
+      if DKIM_ON
+        helo = Dkim::domain
+        message = Dkim.sign(eml.raw)
+      else
+        helo = DOMAIN
+        message = eml.raw
       end
+      
+      begin
+        smtp.start(helo) do |s|
+            s.send_message message, eml.AddressFrom, eml.AddressTo
+        end
+      rescue Exception => e
+        result = "500 Error: "+ e.message + "\r\n"
+      end
+      return result
     end
     
   end
   
   class Server
-    # thanks @aarongough https://github.com/aarongough
     
+    # thanks @aarongough https://github.com/aarongough
     def initialize(port = 2525)
       @server = TCPServer.new port
       serve()
@@ -62,7 +77,7 @@ class Mta
     class Handler
       
       def initialize(ctx)
-        puts "New connection accepted"
+        puts "MTA: New connection accepted"
         @connection_active = false
         @data_mode = false
         reset_message()
@@ -79,7 +94,7 @@ class Mta
             while line = ctx.gets
               code = process_line(line, ctx)
               ctx.puts code if code.strip != ''
-              puts code if code.strip != ''
+              puts code if code.strip != '' && DEBUG
               unless @connection_active
                 ctx.close
                 break
@@ -112,8 +127,7 @@ class Mta
         if(@data_mode && (line.chomp =~ /^\.$/))
           @message[:data] += line
           @data_mode = false
-          new_message_event(@message)
-          return "250 OK\r\n"
+          return send_message(@message)
         end
         
         if(@data_mode)
@@ -125,7 +139,7 @@ class Mta
   
       end
       
-      def new_message_event(message_hash)
+      def send_message(message_hash)
         Sender.send(message_hash)
       end
     
@@ -137,10 +151,10 @@ class Mta
     def serve
       puts "Starting MTA on port 2525"
       loop do
-          Handler.new(@server.accept); 
-          #Thread.start(@server.accept){|ctx|
-          #  Handler.new(ctx); 
-          #}
+          #Handler.new(@server.accept); 
+          Thread.start(@server.accept){|ctx|
+            Handler.new(ctx); 
+          }
       end
     end
   
@@ -155,8 +169,11 @@ class Mta
     end
   end
   
-  def initialize
-    server = Server.new
+  def stop()
+    @thread.stop
   end
   
+  def initialize
+    @thread = ServerThread.new.start
+  end
 end

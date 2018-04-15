@@ -3,3 +3,4 @@ require_relative '../app/lib/extra/eml'
 require_relative '../app/lib/mta'
 
 mta = Mta.instance
+puts 'MTA Test'
