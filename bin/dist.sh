@@ -20,5 +20,8 @@ cp bin/installer.run  /tmp/installer.run
 
 cd  /tmp/NikaMail_dist && tar -cf - . | xz -9 -c - > /tmp/NikaMail.tar.xz 
 cat /tmp/NikaMail.tar.xz >> /tmp/installer.run
-
+rm /tmp/NikaMail.tar.xz 
+rm -rf /tmp/NikaMail_dist
+mv /tmp/installer.run ~/Documents/nika.run
+chmod u+x ~/Documents/nika.run
 
