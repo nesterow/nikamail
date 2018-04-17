@@ -1,15 +1,15 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 
 echo ""
 echo "NikaMail 1.0 Installer"
 echo ""
 DESTINATION=""
 
-read -p "Installation path [/tmp/NikaMail]:" DESTINATION
+read -p "Installation path [/opt/NikaMail]:" DESTINATION
 
 if [[ -z "${DESTINATION// }" ]]
 then
-DESTINATION="/tmp/NikaMail"
+DESTINATION="/opt/NikaMail"
 fi
 mkdir -p ${DESTINATION}
 echo "Installing to ${DESTINATION}"
@@ -25,6 +25,7 @@ cd $DESTINATION && tar -xf /tmp/nika_tmp.tar.xz
 echo "Installed to ${DESTINATION}"
 echo "Installation complete."
 echo ""
+echo "Visit https://nika.run/docs/ and follow instructions to get started"
 
 # Exit from the script with success (0)
 exit 0
