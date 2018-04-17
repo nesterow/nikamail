@@ -1,3 +1,10 @@
+=begin
+
+  Anton A. Nesterov (c) 2018, CC-BY-SA 4.0
+  License: https://creativecommons.org/licenses/by-sa/4.0/
+
+=end
+
 require 'fileutils'
 require 'base64'
 require 'digest'
@@ -26,13 +33,13 @@ def folder(path)
   path
 end
 
-def confile(path)
+def confile(path, create = true)
   root = File.dirname(__FILE__).gsub('/lib','').gsub('/app', '/config')
   unless Dir.exist? root
     FileUtils.mkdir_p(root)
   end
   file = "#{root}/#{path}"
-  FileUtils.touch file
+  FileUtils.touch(file) if create
   return file
 end
 
@@ -46,6 +53,15 @@ def storagefile(path, create = true)
   return file
 end
 
+def storagedir(path)
+  root = File.dirname(__FILE__).gsub('/lib','').gsub('/app', '/storage')
+  unless Dir.exist? root
+    FileUtils.mkdir_p(root)
+  end
+  file = "#{root}/#{path}"
+  FileUtils.mkdir_p(file) unless Dir.exist?(file)
+  return file
+end
 
 def generate_cert
   path = confile("keystore.jks")

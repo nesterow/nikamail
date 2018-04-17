@@ -1,3 +1,10 @@
+=begin
+
+  Anton A. Nesterov (c) 2018, CC-BY-SA 4.0
+  License: https://creativecommons.org/licenses/by-sa/4.0/
+
+=end
+
 require_relative './globals'
 require_relative './extra/eml'
 require_relative '../hooks'
@@ -6,10 +13,17 @@ class MaildropWatcher < J::Thread
   
   def initialize
     @uidtable = Storage.new('maildrop.indexes')
+    @pause = false
+    reload()
+  end
+  
+  def reload
+    @pause = true
     @names = Hooks.registry.keys
     for name in @names
       @uidtable.add(name, 0) if @uidtable.get(name).nil?
     end
+    @pause = false
   end
   
   def uid_to_int uid
@@ -18,7 +32,9 @@ class MaildropWatcher < J::Thread
   
   def check
     for name in @names
-      data = File.read storagefile("maildrops/#{name}/uid.txt", false)
+      f = storagefile("maildrops/#{name}/uid.txt", false)
+      next unless File.exist? f
+      data = File.read f
       old_uid = @uidtable.get(name)
       current_uid = uid_to_int(data)
       if old_uid < current_uid
@@ -46,7 +62,7 @@ class MaildropWatcher < J::Thread
   def run
     while true do
       sleep 0.3
-      check()
+      check() unless @pause
     end
   end
   

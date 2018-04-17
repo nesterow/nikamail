@@ -1,0 +1,7 @@
+[program:nikamail]
+directory=/opt/NikaMail
+command=%(directory)/bin/jruby app/main.rb
+process_name=%(program_name)s_%(process_num)02d
+stdout_logfile=/var/log/nikamail.log
+autostart=true
+autorestart=true

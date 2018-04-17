@@ -1,0 +1,3 @@
+MTA_SERVER_ON=true
+MX_SERVER_ON=true
+POP3_SERVER_ON=true

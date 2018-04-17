@@ -1,3 +1,10 @@
+=begin
+
+  Anton A. Nesterov (c) 2018, CC-BY-SA 4.0
+  License: https://creativecommons.org/licenses/by-sa/4.0/
+
+=end
+
 module Kernel
   require 'java'
   require_relative "./utils"
@@ -16,10 +23,19 @@ module Kernel
       load()
     end
     
+    def clean
+      @data = Hash.new
+      save()
+    end
+    
     def load
-      data = File.read(storagefile(@path))
-      @data = data.length != 0 && Marshal.load(data) || Hash.new
-      @data
+      begin
+        data = File.read(storagefile(@path))
+        @data = data.length != 0 && Marshal.load(data) || Hash.new
+      rescue
+        puts "Failed to load file"
+        @data = Hash.new
+      end
     end
     
     def save

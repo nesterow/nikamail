@@ -1,100 +1,57 @@
-NikaMail ~0.2a
-========
-**NikaMail** is **[Mireka](http://mireka.org/)** on JRuby.
+# NikaMail v1.0
+
+**NikaMail** is a portable, extendable, zero-config email server.
+It is designed to perform automation tasks, provide access to mailboxes
+and serve as a mail transfer agent.
+*NikaMail* is built on top of [Mireka](http://mireka.org) and [JRuby](https://jruby.org).
 
 
-Portable SMTP/POP3 server and MTA for JVM featuring JRuby.
-**NikaMail** is a zero-config solution. You can run it without wasting  time on pre-configuration. Only dependency is Java.
+[Documentation](https://nika.run/docs/)
+
+### What does ''portable'' mean?
+'Portable' means that every part of application is included in one package.
+Configure it once and run it everywhere.
+
+*Need to move the server on another machine?* - Just copy it.
+It works with Docker or without it.
+
+*Raspbery PI?* - No problem.
+
+### FEATURES
 
 
-* SMTP Server
-* POP3 Server
-* MTA
-* STARTTLS
-* JSON-RPC
-* Email post-processing
-* JRuby
-* [Mireka](http://mireka.org/) filters in java
+| Name | Features  |
+|------|-----------|
+| **Mail Exchange Server (MX)** | Receive emails. SMTP `on port 25`, STARTTLS |
+| **Mail Transfer Agent (MTA)**  | Send emails. SMTP `on port 587`, STARTTLS, DKIM.  |
+| **POP3 Server (POP3)** | Access emails. POP3 `on port 110`, STARTTLS. |
+| **WebUI** | `port 10080 (https)` ,Configure server on fly using WebUI.|
+| **Mailing Lists** | Create subscription lists and private groups. |
+| **StartTLS Encryption** | TLS on standard ports. TLS is also supported by MTA for outgoing connections, GMail and other services tag it as 'secure' |
+| **Email Automation** |  Process and handle received emails using Ruby. For example, you can handle reports automatically. |
+| **DKIM signing** | Signing emails using a Private Key to prove that they are sent by your server|
+| **JSON RPC** | Server can interact with your applications. |
+| **Listings Rest API** | Add subscribers from your application. |
+| **Java Extensions** | Write server extensions in Java |
+| **JRuby** | Program and tweak server in Ruby |
+
+
+### REQUIREMENTS
+| Name | Descrition |
+|-------|------------|
+| JVM 7+ | Java Virtual Machine. OpenJDK or Oracle |
+| A POSIX SYSTEM | Any Unix-like sytem should work. Linux, BSD*, MacOS, Android |
+| 265 Mb RAM (*Minimal Requirement*)| It performs if the server is expected to process *`less than ~1500` emails in an hour*. |
+| 512+ Mb RAM (*Recommended*)| It performs if the server is expected to process *`more than ~1500` emails in an hour*. |
+| 30+ Mb of Disk Space | Don't forget you need to store emails somewhere |
 
 
 
+### AUTHOR
+**Anton A. Nesterov** &lt;arch.nesterov(@)gmail.com&gt;
+[Feed that guy](https://nika.run/donate/) or [hire him](https://nika.run/services/), or else, he'll come in your spam nightmares.
 
-Installation
-------------
+*NikaMail software is licensed under [Creative Commons Attribution-ShareAlike 4.0 International License.](https://creativecommons.org/licenses/by-sa/4.0/)*
 
-1. Install Dependencies
-    - `sudo apt install openjdk-8-jdk-headless`
-    - `sudo apt install docker.io` - docker
-    - `sudo gpasswd -a $USER docker` - add yourself to docker group
-    - `newgrp docker` - refresh group permissions
-
-2. Clone & Buld
-    - `git clone git@bitbucket.org:nesterow/nikamail.git` - clone latest version from 'master' branch
-    - `cd ./nikamail` 
-    - `make build`
-
-3. Run interactive console
-    - `make console`
-    
-### Can it run without docker?
-    * Yes! The command is `bin/jruby app/main.rb`
-
-Commands
---------
-```
-    make build         - (re)build docker container and java extensions
-    make console       - run ineractive console
-    make run           - run NikaMail
-    make start         - run NikaMail in daemon mode
-    make stop          - stop daemon
-    make restart       - restart daemon
-```
-
-
-Configuration
--------------
-
-### Managing
-There are two ways to manage server:
-
-1. Using command line tool
-2. Using JSON RPC.
-
-#### Using command line
-NikaMail command line tool is simply a Ruby IRB. That means you should use all commands as you would use ruby methods.
-
-Example:
-```ruby
-
-    (irb)> adduser 'mario', 'password123'  # add a new user
-    (irb)> adduser 'luiji', 'password123'
-    (irb)> setalias 'mario+castle@domain.fqdn', 'mario@domain.fqdn' # set alias
-    (irb)> forward 'bros@domain.fqdn', 'mario@domain.fqdn', 'luiji@domain.fqdn'
-
-```
-- Server does not need restart when you add new users.
-- However you have to restart server after adding *aliases*, *forward lists*, *mailing lists* and other *filters*
-
-
-### STARTTLS/SSL
-
-* Import a certificate signed for your domain into Java Key Store.
-```
-    keytool -importcert -file certificate.cer -keystore keystore.jks -alias servercert
-```
-
-* Or generate a self-signed certificate
-```
-    keytool -genkey -keyalg RSA -alias servercert -dname "CN=1, OU=2, O=2, L=4, S=5, C=GB" -keystore keystore.jks  -storepass password -keypass password -validity 1440 -keysize 2048 -noprompt
-```
-
-* Put `keystore.jks` to the `config` directory
-
-
-* Edit `configuration.rb` as follows:
-```ruby
-STARTTLS = true
-KEYSTORE = "keystore.jks"
-KEYSTORE_PASSWORD = "password"
-```
-
+*Materials shipped within NikaMail distribution, including graphic materials, texts,
+third-party software and binary files are distributed under permissive opensource licenses [by their authors](https://nika.run/credits/).*

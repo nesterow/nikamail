@@ -1,5 +1,13 @@
+=begin
+
+  Anton A. Nesterov (c) 2018, CC-BY-SA 4.0
+  License: https://creativecommons.org/licenses/by-sa/4.0/
+
+=end
 
 module Mireka
+  
+  java_import "mireka.login.IGlobalUsers"
   
   class LoginSpec
     java_implements Mireka::LoginSpecification
@@ -84,6 +92,7 @@ module Mireka
       raise "User Does't Exist"
     end
     ILoginSpecification.removeUser(name)
+    USERS.removeUser(name)
     STORAGE.remove(name)
   end
   
@@ -164,7 +173,7 @@ module Mireka
   STORAGE = Storage.new('users.storage')
   
   
-  USERS = GlobalUsers.new()
+  USERS = IGlobalUsers.new()
   USERS.setUsers(getUsers())
   inject(USERS)
   

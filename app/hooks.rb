@@ -1,13 +1,35 @@
-# Post-processing hooks
+=begin
+
+  Anton A. Nesterov (c) 2018, CC-BY-SA 4.0
+  License: https://creativecommons.org/licenses/by-sa/4.0/
+
+=end
+
+require_relative "lib/extra/listings"
+
 module Hooks
   
-  def self.registry
-  @r||={
+  def self.load_extensions
+    ListingsExtension.new(@registry)
     
-      mario: [ method(:print_mario_emails), method(:redirect_mario_email) ]
-  
-  }
+    begin
+      $drops.reload()
+    rescue
+    end
   end
+  
+  def self.registry
+    return @registry if @registry
+    @registry={
+      
+      mario: [ method(:print_mario_emails), method(:redirect_mario_email) ]
+    
+    }
+    load_extensions()
+    return @registry
+  end
+  
+  
   
   def self.print_mario_emails(eml)
     puts "Post-processing is here"

@@ -1,4 +1,13 @@
 =begin
+
+  Anton A. Nesterov (c) 2018, CC-BY-SA 4.0
+  License: https://creativecommons.org/licenses/by-sa/4.0/
+
+=end
+
+
+=begin about
+
 Basic email parser
 RFC1341, RFC2387, RFC2046
 
@@ -32,14 +41,16 @@ Usage:
 =end
 
 require 'net/smtp'
-
+require 'securerandom'
 class Eml
   
   attr_accessor(
     :raw,
     :header,
     :From,
+    :AddressFrom,
     :To,
+    :AddressTo,
     :Subject,
     :SubjectID,
     :Date,
@@ -49,14 +60,34 @@ class Eml
     :Body
   )
   
-  def initialize(path)
-    @path = path
-    @raw = IO.read(path)
+  def initialize(data, raw=false)
+    unless raw
+      @path = data
+      @raw = IO.read(@path)
+    else
+      @raw = data
+    end
+    parse()
+  end
+  
+  def copy
+    Eml.new(@raw, true)
+  end
+  
+  def cleanHeaders
+    header = "From: " + @header.split("From: ")[1]
+    header = header.sub(/^Message-ID: (.+$)/, "Message-ID: <#{SecureRandom.hex(12)}@nika-relay>")
+    @raw = @raw.sub(@header, header)
     parse()
   end
   
   def setTo(addr)
     @raw = @raw.sub(@To, addr)
+    parse()
+  end
+  
+  def setFrom(addr)
+    @raw = @raw.sub(@From, addr)
     parse()
   end
   
@@ -103,7 +134,7 @@ class Eml
       filename = /filename=(.+$)/.match(@header).to_a[1]
       @filename = filename.gsub('"', '').strip unless filename.nil?
       
-      if @ContentType.include? 'multipart/related'
+      if @ContentType.include?('multipart/related')
         @related = true
         parse()
       else
@@ -111,6 +142,10 @@ class Eml
         @Images = []
       end
       
+    end
+    
+    def related?
+      @related
     end
     
     private
@@ -137,7 +172,9 @@ class Eml
   def parse
     @header = @raw.split(/^\s*$/)[0]
     @From = /^From: (.+$)/.match(@header).to_a[1]
+    @AddressFrom = /\<(.+)\>/.match(@From).to_a[1] || @From
     @To = /^To: (.+$)/.match(@header).to_a[1]
+    @AddressTo = /\<(.+)\>/.match(@To).to_a[1] || @To
     @Subject = /^Subject: (.+$)/.match(@header).to_a[1]
     @SubjectID = /Subject: (.*)\[(.+)\]/.match(@header).to_a.last
     @Date = /^Date: (.+$)/.match(@header).to_a[1]

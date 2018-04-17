@@ -1,3 +1,10 @@
+=begin
+
+  Anton A. Nesterov (c) 2018, CC-BY-SA 4.0
+  License: https://creativecommons.org/licenses/by-sa/4.0/
+
+=end
+
 module Mireka
   
   IAuthIPAddress = ConnectedFromAuthorizedIpAddress.new
@@ -16,9 +23,15 @@ module Mireka
   
   RemoteSpec = RecipientSpecificationDestinationPair.new
   RemoteSpec.setRecipientSpecification(inject(AnyRecipient.new))
+  
   SubTransmitter = TransmitterDestination.new
   SubTransmitter.setTransmitter(PrimaryTransmitter)
-  RemoteSpec.setDestination(inject(SubTransmitter))
+  
+  SubRelay = RelayDestination.new
+  SubRelay.setBackendServer(IBackendServer)
+  
+  #RemoteSpec.setDestination(inject(SubTransmitter))
+  RemoteSpec.setDestination(inject(SubRelay))
   inject(RemoteSpec)
   
   SubRecipientTable = RecipientTable.new

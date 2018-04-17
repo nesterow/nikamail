@@ -1,3 +1,10 @@
+=begin
+
+  Anton A. Nesterov (c) 2018, CC-BY-SA 4.0
+  License: https://creativecommons.org/licenses/by-sa/4.0/
+
+=end
+
 module Mireka
   ILogIdFactory = inject(LogIdFactory.new())
   PrimaryTransmitter = inject(QueuingTransmitter.new())
@@ -5,12 +12,20 @@ module Mireka
   RetryTransmitter = inject(QueuingTransmitter.new())
   OutgoingRegistry = inject(OutgoingConnectionsRegistry.new())
   
+  IClientFactory = ClientFactory.new
+  IClientFactory.setHelo(DOMAIN)
+  
+  IBackendServer = BackendServer.new
+  IBackendServer.setClientFactory(inject(IClientFactory))
+  IBackendServer.setHost('localhost')
+  IBackendServer.setPort(2525)
+  inject(IBackendServer)
+  
   IMailToHostTransmitter = MailToHostTransmitter.new()
   IMailToHostTransmitter.setOutgoingConnectionRegistry(OutgoingRegistry)
   IMailToHostTransmitter.setLogIdFactory(ILogIdFactory)
   
-  IClientFactory = ClientFactory.new
-  IClientFactory.setHelo(DOMAIN)
+  
   
   DirectSender = DirectImmediateSender.new()
   DirectSender.setClientFactory(inject(IClientFactory))

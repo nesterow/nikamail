@@ -1,3 +1,10 @@
+=begin
+
+  Anton A. Nesterov (c) 2018, CC-BY-SA 4.0
+  License: https://creativecommons.org/licenses/by-sa/4.0/
+
+=end
+
 require_relative './mireka'
 require_relative './queue'
 require_relative './users'
@@ -21,6 +28,7 @@ module Mireka
     authenticationHandlerFactory = EasyAuthenticationHandlerFactory.new(usernamePasswordValidator)
     @submission.setAuthenticationHandlerFactory(authenticationHandlerFactory)
     @submission.setHostName(DOMAIN)
+    #@submission.setRequireTLS(STARTTLS)
     @submission.setEnableTLS(STARTTLS)
     inject(@submission)
   end
