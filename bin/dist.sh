@@ -14,7 +14,7 @@ rm -rf /tmp/NikaMail_dist/web/.git
 echo -n "local" > /tmp/NikaMail_dist/config/host.list
 echo -n "localhost" > /tmp/NikaMail_dist/config/domain.fqdn
 echo -n $'KEYSTORE_PASSWORD="password"\nKEYSTORE="keystore.jks"\nKEYSTORE_ALIAS="servercert"' > /tmp/NikaMail_dist/config/keystore.rb
-echo -n $'DKIM_ON=false\nDKIM_PRIVATE_KEY=File.read(confile('dkim.key'));' > /tmp/NikaMail_dist/config/dkim.rb
+echo -n $'DKIM_ON=false\nDKIM_PRIVATE_KEY=File.read(confile("dkim.key"));' > /tmp/NikaMail_dist/config/dkim.rb
 rm -f /tmp/installer.run
 cp bin/installer.run  /tmp/installer.run
 
