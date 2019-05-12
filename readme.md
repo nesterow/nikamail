@@ -48,9 +48,6 @@ It works with Docker or without it.
 
 
 ### AUTHOR
-**Anton A. Nesterov** &lt;arch.nesterov(@)gmail.com&gt;
-[Feed that guy](https://nika.run/donate/) or [hire him](https://nika.run/services/), or else, he'll come in your spam nightmares.
-
 *NikaMail software is licensed under [Creative Commons Attribution-ShareAlike 4.0 International License.](https://creativecommons.org/licenses/by-sa/4.0/)*
 
 *Materials shipped within NikaMail distribution, including graphic materials, texts,
