@@ -47,7 +47,7 @@ It works with Docker or without it.
 
 
 
-### AUTHOR
+### LICENSE
 *NikaMail software is licensed under [Creative Commons Attribution-ShareAlike 4.0 International License.](https://creativecommons.org/licenses/by-sa/4.0/)*
 
 *Materials shipped within NikaMail distribution, including graphic materials, texts,
