@@ -1,6 +1,6 @@
 # NikaMail v1.0
 
-This is a github mirror, main project is hosted on [Bitbucket](https://bitbucket.org/nesterow/nikamail)
+> This is a github mirror, main project is hosted on [Bitbucket](https://bitbucket.org/nesterow/nikamail)
 
 **NikaMail** is a portable, extendable, zero-config email server.
 It is designed to perform automation tasks, provide access to mailboxes
